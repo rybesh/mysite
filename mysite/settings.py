@@ -28,7 +28,7 @@ USE_I18N = False
 USE_L10N = False
 
 MEDIA_ROOT = os.environ['CONFIG_WRITABLE_ROOT']
-MEDIA_URL = '/media/'
+MEDIA_URL = '/'
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 
 from silversupport.secret import get_secret

@@ -17,7 +17,6 @@ def schedule(request, slug, year, semester):
     for i, assignment in enumerate(o['course'].assignments.all()):
         assignment.number = (i + 1)
         assignments[assignment.due_date] = assignment
-        print assignment.get_absolute_url()
     for meeting in o['meetings']:
         meeting.assignment_due = assignments.get(meeting.date, None)
     o['schedule'] = o['meetings'] + o['holidays']

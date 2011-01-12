@@ -112,7 +112,7 @@ class Reading(models.Model):
     bibtex = models.TextField()
     citekey = models.CharField(max_length=16, editable=False, unique=True)
     description = models.TextField(blank=True)
-    file = models.FileField(upload_to='readings', blank=True)
+    file = models.FileField(upload_to='courses/readings', blank=True)
     url = models.URLField(blank=True, verify_exists=False)
     def save(self, *args, **kwargs):
         citekeys = bibutils.citekeys(self.bibtex)
