@@ -1,5 +1,5 @@
 from pybtex.database.input import bibtex
-from pybtex.style.formatting import unsrt
+from pybtex.style.formatting import custom
 from pybtex.backends import html, plaintext
 from django.utils.safestring import mark_safe
 from StringIO import StringIO
@@ -12,7 +12,7 @@ def citekeys(bib):
     return parse(bib).entries.keys()
 
 def format(bib, writer):
-    formatter = unsrt.Formatter()
+    formatter = custom.Formatter()
     return [ 
         formatted_entry.text.render(writer) for formatted_entry in 
         formatter.format_entries(parse(bib).entries) ]
