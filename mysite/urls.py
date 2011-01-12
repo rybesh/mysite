@@ -1,16 +1,21 @@
 from django.conf.urls.defaults import *
+from django.contrib import admin
+import os.path
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+media_root = os.path.abspath(os.path.join(os.path.dirname(__file__), 'static'))
+uploads_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../uploads'))
+
+admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^mysite/', include('mysite.foo.urls')),
+    (r'^favicon.ico$', 'django.views.generic.simple.redirect_to', 
+     { 'url': '/media/style/icons/favicon.ico' }),
+    (r'^courses/', include('mysite.courses.urls')),
+    (r'^admin/', include(admin.site.urls)),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    # The following won't be called in production as Apache will intercept them.
+    (r'^media/readings/(?P<path>.*)$', 'django.views.static.serve',
+     { 'document_root': os.path.join(uploads_root, 'readings') }),
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', 
+     { 'document_root': media_root }),
 )

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <title>{{ course }}</title>
+    <!--<link rel="stylesheet" href="/media/style/fluid.gs.css" type="text/css" media="screen"/>-->
+    <!--[if lt IE 8]><link rel="stylesheet" href="/media/style/fluid.gs.lt_ie8.css" type="text/css" media="screen"><![endif]-->
+    <link rel="stylesheet" href="/media/style/base.css" type="text/css"/>
+    {% block css %}{% endblock %}
+  </head>
+  <body>
+    <div class="fluid_grid_layout">
+      {% load markdown typogrify %}
+      <nav>
+        <ul class="nav">
+          {% with course.get_absolute_url as course_url %}
+          <li><a href="{{ course_url }}">Basic info.</a></li>
+          <li><a href="{{ course_url }}schedule/">Schedule.</a></li>
+          <li><a href="{{ course_url }}assignments/">Assignments.</a></li>
+          <li><a href="{{ course_url }}guidelines/">Guidelines.</a></li>
+          {% endwith %}
+        </ul>
+      </nav>    
+      <header>
+        <h1>{{ course.title }}</h1>
+        <h2>
+          {{ course.department }}, {{ course.number }}, 
+          {{ course.get_semester_display }} {{ course.get_year_display }}
+        </h2>
+      </header>
+      {% block content %}{% endblock %}
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>    
+    {% block js %}{% endblock %}
+  </body>   
+</html>

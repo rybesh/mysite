@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block content %}
+{% filter typogrify %}
+<section id="course-info">
+<h3><span class="title">When &amp; Where It Is</span></h3>
+<p>
+{{ course.times }}<br/>
+{{ course.location }}
+</p>
+</section>
+<section id="instructor-info">
+<h3><span class="title">Who's Teaching It</span></h3>
+<p>
+{{ course.instructor.name }}<br/>
+{{ course.instructor.email }}<br/>
+{{ course.instructor.phone }}<br/>
+{{ course.instructor.office }}<br/>
+Office hours: {{ course.instructor.office_hours }}
+</p>
+</section>
+<section id="course-desc">
+<h3><span class="title">What It Is</span></h3>
+{{ course.description|markdown }}
+</section>
+<section>
+<h3><span class="title">Is That All?</span></h3>
+<p>Nope! You should probably check out the 
+<a href="{{ course.get_absolute_url }}guidelines/">guidelines</a>.</p>
+</section>
+{% endfilter %}
+{% endblock %}

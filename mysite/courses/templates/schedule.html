@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% comment %}
+{% block css %}
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" type="text/css" media="screen"/>
+{% endblock %}
+{% endcomment %}
+
+{% block content %}
+<p><strong>This schedule is still in flux.</strong> Specifically, the parts in <span class="tentative">gray</span> are subject to change.</p>
+<div id="accordion">
+{% for entry in schedule %}
+{% if entry.is_holiday %}
+{% with entry as holiday %}
+<h3>
+  <!--<a href="#">-->
+    <span class="date">{{ holiday.date|date:"F j" }}</span><br/>
+    <span class="title">{{ holiday.name }}</span>
+  <!--</a>-->
+</h3>
+<div>
+  <p>No class.</p>
+</div>
+{% endwith %}
+{% else %}
+{% with entry as meeting %}
+<h3>
+  <!--<a href="#">-->
+    <span class="date">{{ meeting.date|date:"F j" }}</span><br/>
+    <span class="title">{{ meeting.title|typogrify }}</span>
+  <!--</a>-->
+</h3>
+<div class="meeting{% if meeting.is_tentative %} tentative{% endif %}">
+  {% filter typogrify %}
+  {% if meeting.assignment_due %}
+  <p class="assignment-due">
+    Assignment #{{  meeting.assignment_due.number }}
+    {% if meeting.assignment_due.is_handed_out %}
+    <a href="{{ meeting.assignment_due.get_absolute_url }}">
+      {{ meeting.assignment_due.title }}
+    </a>
+    {% endif %}
+    due
+  </p>
+  {% endif %}
+  <div class="description">{{ meeting.description|markdown }}</div>
+  {% if meeting.has_readings %}
+  <p>To read <strong>before</strong> this class:</p>
+  <ol class="readings">
+    {% for reading in meeting.reading_list %}
+    <li class="reading">
+      <p>
+        {{ reading.as_html }}
+        {% if reading.url %}<a href="{{ reading.url }}">Link</a>{% endif %}
+        {% if reading.file %}<a href="{{ reading.file.url }}">PDF</a>{% endif %}
+      </p>
+      <div class="description">{{ reading.description|markdown }}</div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+  {% endfilter %}
+</div>
+{% endwith %}
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}
+
+{% comment %}
+{% block js %}
+<script type="text/javascript" src="/media/function/schedule.js"></script>
+{% endblock %}
+{% endcomment %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block content %}
+{% filter typogrify %}
+{% for assignment in course.assignments.all %}
+<h3><span class="title">#{{ forloop.counter  }}: {{ assignment.title }}</span></h3>
+<div>
+  <p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
+  <div class="description">
+    {% if assignment.is_handed_out %}
+    {{ assignment.description|markdown }}
+    {% else %}
+    <p>To be handed out.</p>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+{% endfilter %}
+{% endblock %}
