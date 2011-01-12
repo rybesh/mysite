@@ -14,7 +14,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.environ['CONFIG_FILES'], 'db/mysite.db')
+        'NAME': os.path.join(os.environ['CONFIG_FILES'], 'mysite.db')
     }
 }
 
@@ -63,5 +63,5 @@ INSTALLED_APPS = (
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'
 #HAYSTACK_SEARCH_ENGINE = 'xapian'
-#HAYSTACK_XAPIAN_PATH = os.path.join(os.environ['CONFIG_FILES'], 'search/index')
+#HAYSTACK_XAPIAN_PATH = os.path.join(os.environ['CONFIG_FILES'], 'mysite.index')
 
