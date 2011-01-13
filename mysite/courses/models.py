@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 import bibutils
 
 class Department(models.Model):
@@ -33,6 +34,7 @@ class Course(models.Model):
     )
     department = models.ForeignKey('Department', related_name='courses')
     instructor = models.ForeignKey('Instructor', related_name='courses')
+    students = models.ManyToManyField(User, related_name='courses')
     number = models.CharField(max_length=20)
     slug = models.CharField(max_length=20)
     title = models.CharField(max_length=80)
@@ -41,6 +43,8 @@ class Course(models.Model):
     times = models.CharField(max_length=32)
     location = models.CharField(max_length=32)
     description = models.TextField()
+    def has_student(self, student):
+        return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     @models.permalink
     def get_absolute_url(self):
         return ('course_info_view', (), { 

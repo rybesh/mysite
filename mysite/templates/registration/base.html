@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/media/css/base.css" type="text/css"/>
+    {% block css %}{% endblock %}
+  </head>
+  <body>
+    <div>
+      {% block content %}{% endblock %}
+    </div>
+    {% block js %}{% endblock %}
+  </body>   
+</html>

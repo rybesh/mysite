@@ -9,6 +9,12 @@ ADMINS = (
     ('Ryan Shaw', 'ryanshaw@unc.edu'),
 )
 
+DEFAULT_FROM_EMAIL = 'Ryan Shaw <ryanshaw@unc.edu>'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ryan.b.shaw@gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -30,12 +36,18 @@ USE_L10N = False
 MEDIA_ROOT = os.environ['CONFIG_WRITABLE_ROOT']
 MEDIA_URL = '/'
 ADMIN_MEDIA_PREFIX = '/admin-media/'
+LOGIN_REDIRECT_URL = '/loggedin/'
 
 from silversupport.secret import get_secret
 SECRET_KEY = get_secret()
 
 TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_DIRS = (
+    os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,3 +77,4 @@ INSTALLED_APPS = (
 #HAYSTACK_SEARCH_ENGINE = 'xapian'
 #HAYSTACK_XAPIAN_PATH = os.path.join(os.environ['CONFIG_FILES'], 'mysite.index')
 
+from secrets import *

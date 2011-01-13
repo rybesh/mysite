@@ -53,8 +53,17 @@
     <li class="reading">
       <p>
         {{ reading.as_html }}
-        {% if reading.url %}<a href="{{ reading.url }}">Link</a>{% endif %}
-        {% if reading.file %}<a href="{{ reading.file.url }}">PDF</a>{% endif %}
+        {% if reading.url %}
+        <a href="{{ reading.url }}">Link</a>
+        {% endif %}
+        {% if reading.file %}
+          {% if show_file_links %}
+          <a href="{{ reading.file.url }}">PDF</a>
+          {% else %}
+<a href="{% url django.contrib.auth.views.login %}?next={{ reading.file.url }}">
+Log in</a> to download this reading.
+          {% endif %}
+        {% endif %}
       </p>
       <div class="description">{{ reading.description|markdown }}</div>
     </li>

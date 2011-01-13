@@ -21,6 +21,8 @@ def schedule(request, slug, year, semester):
         meeting.assignment_due = assignments.get(meeting.date, None)
     o['schedule'] = o['meetings'] + o['holidays']
     o['schedule'].sort(key=lambda x: x.date)
+    o['show_file_links'] = request.user.is_authenticated() and (
+        request.user.is_staff or o['course'].has_student(request.user))
     return render_to_response('schedule.html', o)
 
 def guidelines(request, slug, year, semester):
