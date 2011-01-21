@@ -14,5 +14,7 @@ course_patterns = patterns('',
 urlpatterns = patterns('',
     (r'^(?P<slug>[a-z]+-\d+)/(?P<year>\d{4})/(?P<semester>sp|su|fa)/', 
      include(course_patterns)),
+    url(r'^discuss/(?P<discussion_id>\d+)',
+        views.discussion, name='course_discussion_view'),
 )
 

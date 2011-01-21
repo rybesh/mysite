@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <title>{{ course }}</title>
+    <title>{{ course }}{% block title %}{% endblock %}</title>
     <!--<link rel="stylesheet" href="/media/css/fluid.gs.css" type="text/css" media="screen"/>-->
     <!--[if lt IE 8]><link rel="stylesheet" href="/media/css/fluid.gs.lt_ie8.css" type="text/css" media="screen"><![endif]-->
     <link rel="stylesheet" href="/media/css/base.css" type="text/css"/>
@@ -27,10 +27,19 @@
           {{ course.get_semester_display }} {{ course.get_year_display }}
         </h2>
       </header>
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% block content %}{% endblock %}
     </div>
+<!--
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>    
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>    
+-->
     {% block js %}{% endblock %}
   </body>   
 </html>

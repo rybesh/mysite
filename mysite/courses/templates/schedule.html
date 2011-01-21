@@ -2,6 +2,8 @@
 
 {% load markdown typogrify %}
 
+{% block title %}: Schedule{% endblock %}
+
 {% comment %}
 {% block css %}
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" type="text/css" media="screen"/>
@@ -49,23 +51,37 @@
   {% if meeting.has_readings %}
   <p>To read <strong>before</strong> this class:</p>
   <ol class="readings">
-    {% for reading in meeting.reading_list %}
+    {% for assigned in meeting.reading_assignments.all %}
     <li class="reading">
       <p>
-        {{ reading.as_html }}
-        {% if reading.url %}
-        <a href="{{ reading.url }}">Link</a>
+        {{ assigned.reading.as_html }}
+        {% if assigned.reading.url %}
+        <a href="{{ assigned.reading.url }}">Link</a>
         {% endif %}
-        {% if reading.file %}
-          {% if show_file_links %}
-          <a href="{{ reading.file.url }}">PDF</a>
+        {% if assigned.reading.file %}
+          {% if user.is_authenticated %}
+            {% if user_is_authorized %}
+              <a href="{{ assigned.reading.file.url }}">PDF</a>
+            {% endif %}
           {% else %}
-<a href="{% url django.contrib.auth.views.login %}?next={{ reading.file.url }}">
+          <a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
 Log in</a> to download this reading.
           {% endif %}
         {% endif %}
       </p>
-      <div class="description">{{ reading.description|markdown }}</div>
+      <div class="description">{{ assigned.reading.description|markdown }}</div>
+      {% if user.is_authenticated %}
+        {% if user == assigned.discussion_leader %}
+        <div><a href="{{ assigned.get_absolute_url  }}">Post discussion questions</a> for this reading.</div>
+        {% else %}
+          {% if user_is_authorized and assigned.discussion_questions_posted %}
+          <div><a href="{{ assigned.get_absolute_url  }}">See discussion questions</a> for this reading.</div>
+          {% endif %}
+        {% endif %}
+      {% else %}
+      <div><a href="{% url django.contrib.auth.views.login %}?next={{ assigned.get_absolute_url }}">
+Log in</a> to see or post discussion questions for this reading.</div>
+      {% endif %}
     </li>
     {% endfor %}
   </ol>

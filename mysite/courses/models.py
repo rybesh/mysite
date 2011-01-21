@@ -45,6 +45,8 @@ class Course(models.Model):
     description = models.TextField()
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
+    def is_authorized(self, user):
+        return user.is_staff or self.has_student(user)
     @models.permalink
     def get_absolute_url(self):
         return ('course_info_view', (), { 
@@ -132,8 +134,16 @@ class Reading(models.Model):
         ordering = ('citekey',)
 
 class ReadingAssignment(models.Model):
-    meeting = models.ForeignKey('Meeting')
+    meeting = models.ForeignKey('Meeting', related_name='reading_assignments')
     reading = models.ForeignKey('Reading')
     order = models.IntegerField(blank=True, null=True)
+    discussion_leader = models.ForeignKey(User, blank=True, null=True)
+    discussion_questions = models.TextField(blank=True)
+    def discussion_questions_posted(self):
+        return len(self.discussion_questions.strip()) > 0
+    @models.permalink
+    def get_absolute_url(self):
+        return ('course_discussion_view', (), { 
+                'discussion_id': self.id }) 
     class Meta:
         ordering = ('order',)

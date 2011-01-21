@@ -2,6 +2,8 @@
 
 {% load markdown typogrify %}
 
+{% block title %}: Assignments{% endblock %}
+
 {% block content %}
 {% filter typogrify %}
 {% for assignment in course.assignments.all %}

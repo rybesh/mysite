@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: Discussion of {{ assigned.reading.citekey }}{% endblock %}
+
+{% block content %}
+{% filter typogrify %}
+<section id="evaluation">
+<h3><span class="title">Discussion of: {{ assigned.reading.as_html }}</span></h3>
+{% if form %}
+<form method="post" action="">
+{% csrf_token %}
+<p>{{ form.questions }}</p>
+<div>You may use <a target="_blank"
+href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax but not HTML tags.</div>
+<button type="submit">Save</button>
+</form>
+{% else %}
+  {% if assigned.discussion_questions_posted %}
+  <div class="discussion">{{ assigned.discussion_questions|markdown }}</div>
+  {% else %}
+  <p>No discussion questions have been posted yet.</p>
+  {% endif %}
+{% endif %}
+{% endfilter %}
+{% endblock %}
