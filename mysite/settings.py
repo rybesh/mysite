@@ -67,9 +67,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.admin',
+    'django.contrib.comments',
     'south',
     #'haystack',
     'mysite.shared',
+    'mysite.blog',
     'mysite.courses',
 )
 

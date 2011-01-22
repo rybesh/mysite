@@ -18,6 +18,7 @@
           <li><a href="{{ course_url }}assignments/">Assignments.</a></li>
           <li><a href="{{ course_url }}guidelines/">Guidelines.</a></li>
           {% endwith %}
+          <li><a href="/courses/{{ course.slug }}/blog/">Blog.</a></li>
         </ul>
       </nav>    
       <header>
@@ -36,8 +37,8 @@
       {% endif %}
       {% block content %}{% endblock %}
     </div>
-<!--
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>    
+<!--
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>    
 -->
     {% block js %}{% endblock %}

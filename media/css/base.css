@@ -54,7 +54,9 @@ h1 { font-size: 24px; line-height: 26px; margin-bottom: 4px; }
 }
 .dquo { margin-left: -.45em; }
 .assignment-due { color: #408000; font-weight: bold; }
+.error { color: #ef4300; font-weight: bold; font-size: 16px; }
 .success { color: #408000; font-weight: bold; font-size: 16px; }
+.posted-by { color: #666; }
 
 /* Layout */
 
@@ -73,6 +75,9 @@ blockquote { margin-left: 1.5em; }
 .tentative { background-color: #d4d4d4; }
 span.tentative { padding: 2px; }
 div.tentative { padding: 1px 10px 10px; margin-top: 8px }
+ul.errorlist { display: inline; color: #ef4300; }
+ul.errorlist li { display: inline; margin: 0; }
+form div { margin: 2px 0 0 2px; }
 
 /* Buttons */
 

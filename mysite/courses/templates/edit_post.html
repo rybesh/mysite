@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: Edit Blog Post{% endblock %}
+
+{% block content %}
+<nav>
+  <ul class="nav">
+    <li><a href="{% url course_blog_view blog.slug %}?mine">My posts.</a></li>
+  </ul>
+</nav>
+{% if form.errors %}
+<p class="error">Please correct the errors below.</p>
+{% endif %}
+<form method="post" action="">
+{% csrf_token %}
+<h3><span class="title">Title</span></h3>
+<p>{{ form.title }}</p>
+<div>{{ form.title.errors }} {% if post_published %}You cannot edit the title of a published post.{% endif %}</div>
+<h3><span class="title">Slug</span></h3>
+<p>{{ form.slug }}</p>
+<div>{{ form.slug.errors }} Used to generate the URL for your post. {% if post_published %}You cannot edit the slug of a published post.{% endif %}</div>
+<h3><span class="title">Content</span></h3>
+<p>{{ form.content }}</p>
+<div>{{ form.content.errors }} You may use <a target="_blank"
+href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax but not HTML tags.</div>
+<h3><span class="title">Author</span></h3>
+<p>{{ form.display_name }}</p>
+<div>{{ form.display_name.errors }} Leave this blank to publish anonymously.</div>
+{% if post_published %}
+<button type="submit" name="publish">Update</button>
+{% else %}
+<button type="submit" name="draft">Save Draft</button>
+<button type="submit" name="publish">Publish</button>
+{% endif %}
+</form>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/media/js/jquery.slug.js"></script>
+<script type="text/javascript" src="/media/js/edit_post.js"></script>
+{% endblock %}

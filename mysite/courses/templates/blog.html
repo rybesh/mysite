@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: Blog{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<nav>
+  <ul class="nav">
+    <li><a href="{% url course_blog_view blog.slug %}?mine">My posts.</a></li>
+    {% if user_is_authorized %}
+    <li><a href="{% url course_blog_new_post_view blog.slug %}">New post.</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% else %}
+<a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
+Log in</a> to add or edit posts.
+{% endif %}
+{% filter typogrify %}
+{% for post in page.object_list %}
+<h3>
+  {% ifchanged %}
+  <span class="date">
+  {% if post.published %}
+    {{ post.published_at|date:"F j, Y" }}
+  {% else %}
+    {{ post.updated_at|date:"F j, Y" }}
+  {% endif %}
+  </span><br/>
+  {% endifchanged %}
+  <span class="title">{{ post.title }}
+  {% if not post.published %}(Draft){% endif %}
+  </span>
+</h3>
+{{ post.content|markdown }}
+<p class="posted-by">
+{% if post.published %}
+Posted
+{% else %}
+Saved
+{% endif %}
+{% if post.is_anonymous %}
+anonymously
+{% else %}
+by {{ post.display_name }}
+{% endif %}
+at 
+{% if post.published %}
+  {{ post.published_at|date:"f A" }}.{% else %}
+  {{ post.updated_at|date:"f A" }}.{% endif %}{% if post.updated_after_published %}<br/>Updated {{ post.updated_at|date:"F j, Y" }} 
+at {{ post.updated_at|date:"f A" }}.
+{% endif %}
+</p>
+<div class="post-controls">
+{% if post.published %}
+<a href="{{ post.get_absolute_url }}">Permalink.</a>
+{% endif %}
+{% if post.author == user %}
+<a href="{{ post.get_edit_url }}">Edit post.</a>
+{% endif %}
+</div>
+{% empty %}
+<p>No posts have been published yet.</p>
+{% endfor %}
+{% endfilter %}
+<nav>
+  <ul class="nav">
+    {% if posts.has_previous %}
+    <li><a href="?page={{ posts.previous_page_number }}">Newer posts.</a></li>
+    {% endif %}
+    {% if posts.has_next %}
+    <li><a href="?page={{ posts.next_page_number }}">next</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}
