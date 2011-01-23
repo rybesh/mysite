@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 class Blog(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=80)
+    @models.permalink
+    def get_absolute_url(self):
+        return ('course_blog_view', (), { 'slug': self.slug })     
     def __unicode__(self):
         return self.title
 

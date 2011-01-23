@@ -4,6 +4,10 @@
 
 {% block title %}: Blog{% endblock %}
 
+{% block links %}
+<link rel="alternate" type="application/atom+xml" href="{% url course_blog_feed_view blog.slug %}"/>
+{% endblock %}
+
 {% block content %}
 {% if user.is_authenticated %}
 <nav>

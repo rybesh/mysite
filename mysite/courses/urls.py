@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from mysite.blog.feeds import BlogFeed
 import views
 
 course_patterns = patterns('',
@@ -14,6 +15,8 @@ course_patterns = patterns('',
 urlpatterns = patterns('',
     url(r'^(?P<slug>[a-z]+-\d+)/blog/$', 
         views.blog, name='course_blog_view'),
+    url(r'^(?P<slug>[a-z]+-\d+)/blog/feed/all/$', 
+        BlogFeed(), name='course_blog_feed_view'),
     url(r'^(?P<slug>[a-z]+-\d+)/blog/new/post/$', 
         views.edit_post, name='course_blog_new_post_view'),
     url(r'^(?P<slug>[a-z]+-\d+)/blog/(?P<post_slug>[-a-z0-9]+)/$', 
