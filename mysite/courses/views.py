@@ -92,6 +92,8 @@ def blog(request, slug, post_slug=None):
         posts = o['blog'].posts.filter(slug=post_slug, published=True)
         if len(posts) == 0:
             raise Http404
+        o['show_comment_form'] = True
+        o['next'] = posts[0].get_absolute_url()
     elif 'mine' in request.GET:
         posts = o['blog'].posts.filter(author=request.user).order_by('-updated_at')
     else:
@@ -182,8 +184,8 @@ def edit_post(request, slug, post_slug=None):
                 return redirect(next)
         else:
             form = BlogPostForm(initial={ 
-                    'display_name': '%s %s' % (request.user.first_name,
-                                               request.user.last_name) })
+                    'display_name': (request.user.get_full_name() or 
+                                     request.user.username) })
     o['form'] = form
     return render_to_response('edit_post.html', o,
                               context_instance=RequestContext(request))

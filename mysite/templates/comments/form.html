@@ -1,0 +1,16 @@
+{% load comments i18n %}
+<form action="{% comment_form_target %}" method="post">{% csrf_token %}
+  {% if next %}<div><input type="hidden" name="next" value="{{ next }}" /></div>{% endif %}
+  {% for field in form %}
+    {% if field.is_hidden %}
+      <div>{{ field }}</div>
+    {% else %}
+      <h4{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}><span class="title">{{ field.label_tag }}</span></h4>
+      <p{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>{{ field }}</p>
+      <div>{{ field.help_text }} {% if field.errors %}<div>{{ field.errors }}{% endif %}</div>
+    {% endif %}
+  {% endfor %}
+  <button type="submit" name="post" class="submit-post" value="{% trans "Post" %}">{% trans "Post" %}</button>
+  <button type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}">{% trans "Preview" %}</button>
+  <div class="spacer"></div>
+</form>

@@ -18,10 +18,20 @@ urlpatterns = patterns('',
     (r'^$', redirect_to, { 
             'url': 'http://people.ischool.berkeley.edu/~ryanshaw/wordpress/bio/',
             'permanent': False }),
+
     (r'^favicon.ico$', 'django.views.generic.simple.redirect_to', 
      { 'url': '/media/img/favicon.ico' }),
+
     (r'^courses/', include('mysite.courses.urls')),
+
+    url(r'^comments/post/$', 'mysite.comments.views.post_comment', 
+        name='comments_post_comment'),
+
+    (r'^comments/', include('django.contrib.comments.urls')),
+
     (r'^admin/', include(admin.site.urls)),
+
     (r'^loggedin/$', loggedin),
+
     (r'', include('django.contrib.auth.urls')),
 )

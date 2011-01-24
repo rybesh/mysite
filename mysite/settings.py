@@ -73,7 +73,10 @@ INSTALLED_APPS = (
     'mysite.shared',
     'mysite.blog',
     'mysite.courses',
+    'mysite.comments',
 )
+
+COMMENTS_APP = 'mysite.comments'
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'
 #HAYSTACK_SEARCH_ENGINE = 'xapian'

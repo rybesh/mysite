@@ -1,0 +1,14 @@
+{% load markdown typogrify %}
+<div class="comments">
+  {% for comment in comment_list %}
+  {{ comment.comment|markdown|typogrify }}
+  <p class="posted-by">
+    {% if comment.user_name == 'anonymous' %}
+    Anonymous commenter,
+    {% else %}
+    {{ comment.name }},
+    {% endif %}
+    {{ comment.submit_date|date:"f A" }}{% ifchanged %}, {{ comment.submit_date|date:"F j, Y" }}{% endifchanged %}.
+  </p>
+  {% endfor %}
+</div>
