@@ -36,7 +36,9 @@ USE_L10N = False
 MEDIA_ROOT = os.environ['CONFIG_WRITABLE_ROOT']
 MEDIA_URL = '/'
 ADMIN_MEDIA_PREFIX = '/admin-media/'
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/loggedin/'
+LOGOUT_URL = '/logout/'
 
 from silversupport.secret import get_secret
 SECRET_KEY = get_secret()
