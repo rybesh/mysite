@@ -15,6 +15,8 @@ def loggedin(request):
     return redirect('/')
 
 urlpatterns = patterns('',
+    url(r'^deploy/$', 'mysite.shared.views.deploy', name='shared_deploy_view'),
+
     (r'^$', redirect_to, { 
             'url': 'http://people.ischool.berkeley.edu/~ryanshaw/wordpress/bio/',
             'permanent': False }),
@@ -25,7 +27,7 @@ urlpatterns = patterns('',
     (r'^courses/', include('mysite.courses.urls')),
 
     url(r'^comments/post/$', 'mysite.comments.views.post_comment', 
-        name='comments_post_comment'),
+        name='comments_post_comment_view'),
 
     (r'^comments/', include('django.contrib.comments.urls')),
 
