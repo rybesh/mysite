@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 import datetime
 
@@ -86,6 +87,7 @@ def get_current_course(slug):
 def blog(request, slug, post_slug=None):
     o = {}
     o['blog'] = get_object_or_404(Blog, slug=slug)
+    o['domain'] = Site.objects.get_current().domain
     o['course'] = get_current_course(slug)
     o['user_is_authorized'] = o['course'].is_authorized(request.user)
     if post_slug:
