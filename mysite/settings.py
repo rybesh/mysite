@@ -26,7 +26,7 @@ DATABASES = {
 
 # On Unix systems, a value of None will cause Django to use the same
 # timezone as the operating system.
-TIME_ZONE = None
+TIME_ZONE = 'US/Eastern'
 
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
