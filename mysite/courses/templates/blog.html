@@ -19,7 +19,7 @@
   </ul>
 </nav>
 {% else %}
-<a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
+<a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">
 Log in</a> to add or edit posts.
 {% endif %}
 {% filter typogrify %}
@@ -63,7 +63,7 @@ at {{ post.updated_at|date:"f A" }}.
   {% if user.is_authenticated %}
 <a href="{{ post.get_absolute_url }}#comment">Leave comment.</a>
   {% else %}
-<a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
+<a href="{% url django.contrib.auth.views.login %}?next={{ post.get_absolute_url }}">
 Log in</a> to leave a comment.
   {% endif %}
 {% endif %}
