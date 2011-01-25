@@ -9,19 +9,19 @@
 {% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
 <nav>
   <ul class="nav">
+    <li><a href="{% url course_blog_feed_view blog.slug %}">Atom feed.</a></li>
+    {% if user.is_authenticated %}
     <li><a href="{% url course_blog_view blog.slug %}?mine">My posts.</a></li>
-    {% if user_is_authorized %}
+      {% if user_is_authorized %}
     <li><a href="{% url course_blog_new_post_view blog.slug %}">New post.</a></li>
+      {% endif %}
+    {% else %}
+    <li><a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">Log in</a> to add or edit posts.</li>
     {% endif %}
   </ul>
 </nav>
-{% else %}
-<a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">
-Log in</a> to add or edit posts.
-{% endif %}
 {% filter typogrify %}
 {% for post in page.object_list %}
 <h3>
