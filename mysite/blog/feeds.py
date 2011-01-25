@@ -30,3 +30,9 @@ class BlogFeed(Feed):
 
     def item_description(self, post):
         return mark_safe(markdown2.markdown(force_unicode(post.content)))
+
+    def item_author_name(self, post):
+        return post.display_name
+
+    def item_pubdate(self, post):
+        return post.updated_at
