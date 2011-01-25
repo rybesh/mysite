@@ -2,4 +2,5 @@ from models import *
 from django.contrib import admin
 
 admin.site.register(Blog)
+admin.site.register(Post)
 

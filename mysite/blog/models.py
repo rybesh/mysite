@@ -19,7 +19,7 @@ class Post(models.Model):
     slug = models.SlugField(unique=True)
     content = models.TextField()
     published = models.BooleanField(default=False)
-    published_at = models.DateTimeField(blank=True, null=True, editable=False)
+    published_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     def is_anonymous(self):
         return (len(self.display_name.strip()) == 0)
