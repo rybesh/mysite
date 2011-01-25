@@ -7,7 +7,7 @@
     {% else %}
       <h4{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}><span class="title">{{ field.label_tag }}</span></h4>
       <p{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>{{ field }}</p>
-      <div>{{ field.help_text }} {% if field.errors %}<div>{{ field.errors }}{% endif %}</div>
+      <div>{% if field.errors %}{{ field.errors }}{% endif %} {{ field.help_text }}</div>
     {% endif %}
   {% endfor %}
   <button type="submit" name="post" class="submit-post" value="{% trans "Post" %}">{% trans "Post" %}</button>

@@ -60,9 +60,12 @@ at {{ post.updated_at|date:"f A" }}.
 <div class="post-controls">
 {% if post.published %}
 <a href="{{ post.get_absolute_url }}">Permalink.</a>
-{% endif %}
-{% if user.is_authenticated %}
+  {% if user.is_authenticated %}
 <a href="{{ post.get_absolute_url }}#comment">Leave comment.</a>
+  {% else %}
+<a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
+Log in</a> to leave a comment.
+  {% endif %}
 {% endif %}
 {% if post.author == user %}
 <a href="{{ post.get_edit_url }}">Edit post.</a>
