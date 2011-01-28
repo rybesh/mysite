@@ -28,8 +28,14 @@ def schedule(request, slug, year, semester):
         assignments[assignment.due_date] = assignment
     for meeting in o['meetings']:
         meeting.assignment_due = assignments.get(meeting.date, None)
+    
     o['schedule'] = o['meetings'] + o['holidays']
     o['schedule'].sort(key=lambda x: x.date)
+    today = datetime.date.today()
+    for item in o['schedule']:
+        if item.date >= today:
+            item.next = True
+            break
     o['user_is_authorized'] = o['course'].is_authorized(request.user)
     return render_to_response('schedule.html', o,
                               context_instance=RequestContext(request))

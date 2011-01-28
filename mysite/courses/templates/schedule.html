@@ -14,9 +14,9 @@
 <p><strong>This schedule is still in flux.</strong> Specifically, the parts in <span class="tentative">gray</span> are subject to change.</p>
 <div id="accordion">
 {% for entry in schedule %}
+<h3{% if entry.next %} id="next"{% endif %}>
 {% if entry.is_holiday %}
 {% with entry as holiday %}
-<h3>
   <!--<a href="#">-->
     <span class="date">{{ holiday.date|date:"F j" }}</span><br/>
     <span class="title">{{ holiday.name }}</span>
@@ -28,7 +28,6 @@
 {% endwith %}
 {% else %}
 {% with entry as meeting %}
-<h3>
   <!--<a href="#">-->
     <span class="date">{{ meeting.date|date:"F j" }}</span><br/>
     <span class="title">{{ meeting.title|typogrify }}</span>
