@@ -81,13 +81,13 @@ Log in</a> to leave a comment.
 <p>No posts have been published yet.</p>
 {% endfor %}
 {% endfilter %}
-<nav>
+<nav id="pagination">
   <ul class="nav">
-    {% if posts.has_previous %}
-    <li><a href="?page={{ posts.previous_page_number }}">Newer posts.</a></li>
+    {% if page.has_previous %}
+    <li><a href="?page={{ page.previous_page_number }}">Newer posts.</a></li>
     {% endif %}
-    {% if posts.has_next %}
-    <li><a href="?page={{ posts.next_page_number }}">next</a></li>
+    {% if page.has_next %}
+    <li><a href="?page={{ page.next_page_number }}">Older posts.</a></li>
     {% endif %}
   </ul>
 </nav>
