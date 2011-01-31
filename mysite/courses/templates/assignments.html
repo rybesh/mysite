@@ -7,7 +7,7 @@
 {% block content %}
 {% filter typogrify %}
 {% for assignment in course.assignments.all %}
-<h3><span class="title">#{{ forloop.counter  }}: {{ assignment.title }}</span></h3>
+<h3 id="a{{ forloop.counter }}"><span class="title">#{{ forloop.counter }}: {{ assignment.title }}</span></h3>
 <div>
   <p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
   <div class="description">
