@@ -1,5 +1,5 @@
 {% extends "comments/base.html" %}
-{% load i18n %}
+{% load i18n markdown typogrify %}
 
 {% block title %}{% trans "Preview your comment" %}{% endblock %}
 
@@ -11,7 +11,7 @@
     <p class="error">{% blocktrans count form.errors|length as counter %}Please correct the error below{% plural %}Please correct the errors below{% endblocktrans %}</p>
     {% else %}
     <p>{% trans "Preview your comment" %}</p>
-    <blockquote>{{ comment|linebreaks }}</blockquote>
+    <blockquote>{{ comment|markdown|typogrify }}</blockquote>
     <p>{% trans "and" %}
     <button style="float: none; display: inline; margin: 0 6px 0 6px" type="submit" name="submit" class="submit-post" value="{% trans "Post your comment" %}" id="submit">{% trans "Post your comment" %}</button> 
     {% trans "or make changes" %}:</p>
