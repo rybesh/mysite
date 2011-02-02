@@ -25,7 +25,9 @@ urlpatterns = patterns('',
         views.edit_post, name='course_blog_edit_post_view'),
     (r'^(?P<slug>[a-z]+-\d+)/(?P<year>\d{4})/(?P<semester>sp|su|fa)/', 
         include(course_patterns)),
-    url(r'^discuss/(?P<discussion_id>\d+)',
+    url(r'^discuss/(?P<discussion_id>\d+)/$',
         views.discussion, name='course_discussion_view'),
+    url(r'^discuss/(?P<discussion_id>\d+)/edit/',
+        views.edit_discussion, name='course_edit_discussion_view'),
 )
 

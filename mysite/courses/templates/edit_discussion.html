@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: Discussion of {{ assigned.reading.citekey }}{% endblock %}
+
+{% block content %}
+<h3><span class="title">Discussion of: {{ assigned.reading.as_html }}</span></h3>
+<form method="post" action="">
+{% csrf_token %}
+<p>{{ form.questions }}</p>
+<div>{{ form.questions.help_text }}</div>
+<button type="submit">Save</button>
+</form>
+{% endblock %}

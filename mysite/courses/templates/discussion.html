@@ -7,20 +7,13 @@
 {% block content %}
 {% filter typogrify %}
 <h3><span class="title">Discussion of: {{ assigned.reading.as_html }}</span></h3>
-{% if form %}
-<form method="post" action="">
-{% csrf_token %}
-<p>{{ form.questions }}</p>
-<div>You may use <a target="_blank"
-href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax but not HTML tags.</div>
-<button type="submit">Save</button>
-</form>
+{% if assigned.discussion_questions_posted %}
+<div class="discussion">{{ assigned.discussion_questions|markdown }}</div>
 {% else %}
-  {% if assigned.discussion_questions_posted %}
-  <div class="discussion">{{ assigned.discussion_questions|markdown }}</div>
-  {% else %}
-  <p>No discussion questions have been posted yet.</p>
-  {% endif %}
+<p>No discussion questions have been posted yet.</p>
+{% endif %}
+{% if user == assigned.discussion_leader %}
+<a class="button" href="{% url course_edit_discussion_view assigned.id %}">Edit</a>
 {% endif %}
 {% endfilter %}
 {% endblock %}

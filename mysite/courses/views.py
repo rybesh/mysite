@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.utils.safestring import mark_safe
 import datetime
 
 def info(request, slug, year, semester):
@@ -54,7 +55,8 @@ def assignments(request, slug, year, semester):
 
 class DiscussionForm(forms.Form):
     questions = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 20, 'cols':80}))
+        widget=forms.Textarea(attrs={'rows': 20, 'cols':80}),
+        help_text=mark_safe('You may use <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> syntax but not HTML tags.'))
 
 @login_required
 def discussion(request, discussion_id):
@@ -64,20 +66,31 @@ def discussion(request, discussion_id):
     o['course'] = o['assigned'].meeting.course
     if not o['course'].is_authorized(request.user):
         return HttpResponseForbidden()
-    if o['assigned'].discussion_leader == request.user:
-        if request.method == 'POST':
-            form = DiscussionForm(request.POST)
-            if form.is_valid():
-                o['assigned'].discussion_questions = form.cleaned_data['questions']
-                o['assigned'].save()
-                messages.add_message(
-                    request, messages.SUCCESS, 'Your questions have been saved.')
-        else:
-            form = DiscussionForm(
-                { 'questions': o['assigned'].discussion_questions })
-        o['form'] = form
     return render_to_response('discussion.html', o,
                               context_instance=RequestContext(request))
+
+@login_required
+def edit_discussion(request, discussion_id):
+    o = {}
+    o['assigned'] = get_object_or_404(
+        ReadingAssignment, id=discussion_id)
+    if not o['assigned'].discussion_leader == request.user:
+        return HttpResponseForbidden()
+    o['course'] = o['assigned'].meeting.course
+    if request.method == 'POST':
+        form = DiscussionForm(request.POST)
+        if form.is_valid():
+            o['assigned'].discussion_questions = form.cleaned_data['questions']
+            o['assigned'].save()
+            messages.add_message(
+                request, messages.SUCCESS, 'Your questions have been saved.')
+            return redirect(o['assigned'].get_absolute_url())
+    else:
+        form = DiscussionForm(
+            { 'questions': o['assigned'].discussion_questions })
+        o['form'] = form
+        return render_to_response('edit_discussion.html', o,
+                                  context_instance=RequestContext(request))
 
 def get_current_course(slug):
     today = datetime.date.today()

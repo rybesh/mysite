@@ -70,11 +70,13 @@ Log in</a> to download this reading.
       </p>
       <div class="description">{{ assigned.reading.description|markdown }}</div>
       {% if user.is_authenticated %}
-        {% if user == assigned.discussion_leader %}
-        <div><a href="{{ assigned.get_absolute_url  }}">Post discussion questions</a> for this reading.</div>
-        {% else %}
-          {% if user_is_authorized and assigned.discussion_questions_posted %}
+        {% if user_is_authorized %}
+          {% if assigned.discussion_questions_posted %}
           <div><a href="{{ assigned.get_absolute_url  }}">See discussion questions</a> for this reading.</div>
+          {% else %}
+            {% if user == assigned.discussion_leader %}
+          <div><a href="{% url course_edit_discussion_view assigned.id %}">Post discussion questions</a> for this reading.</div>
+            {% endif %}
           {% endif %}
         {% endif %}
       {% else %}
