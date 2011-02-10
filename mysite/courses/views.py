@@ -106,6 +106,7 @@ def submit_assignment(request, assignment_id):
     o['course'] = o['assignment'].course
     if not o['course'].is_authorized(request.user):
         return HttpResponseForbidden()
+    submission = None
     if request.method == 'POST':
         form = SubmissionForm(request.POST, request.FILES)
         if form.is_valid():
