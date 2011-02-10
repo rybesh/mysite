@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}: Submit Assignment{% endblock %}
+
+{% block content %}
+<h3><span class="title">Submit Assignment: {{ assignment.title }}</span></h3>
+<form enctype="multipart/form-data" method="post" action="">
+{% csrf_token %}
+{% if files %}
+<div>
+<p>You've uploaded the following files:</p>
+<ul>
+{% for file in files %}
+<li>{{ file }}</li>
+{% endfor %}
+</ul>
+<p>Uploading a new zip archive will overwrite these files.</p>
+</div>
+{% else %}
+<p>You haven't uploaded any files yet.</p>
+{% endif %}
+<p>{{ form.zipfile.help_text }}</p>
+<p>{{ form.zipfile }}</p>
+<button type="submit">Submit</button>
+</form>
+{% endblock %}

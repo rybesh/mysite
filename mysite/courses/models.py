@@ -105,15 +105,31 @@ class Assignment(models.Model):
     title = models.CharField(max_length=80)
     description = models.TextField()
     is_handed_out = models.BooleanField(default=False)
+    is_submitted_online = models.BooleanField(default=False)
     def get_absolute_url(self):
         return (reverse('course_assignments_view', kwargs={ 
-                'slug': self.course.slug, 
-                'semester': self.course.semester, 
-                'year': self.course.year }) + '#' + self.slug)
+                    'slug': self.course.slug, 
+                    'semester': self.course.semester, 
+                    'year': self.course.year }) + '#' + self.slug)
+    def get_submit_url(self):
+        return (reverse('course_submit_assignment_view', kwargs={
+                    'assignment_id': self.id }))
     def __unicode__(self):
         return u'%s: %s' % (self.due_date.strftime('%m-%d'), self.title)
     class Meta:
         ordering = ('due_date',)
+
+class Submission(models.Model):
+    assignment = models.ForeignKey('Assignment', related_name='submissions')
+    submitter = models.ForeignKey(User, related_name='submissions')
+    def upload_to(o, filename):
+        return 'courses/%s/%s/%s/assignments/%s/%s.zip' % (
+            o.assignment.course.slug, 
+            o.assignment.course.year, 
+            o.assignment.course.semester, 
+            o.assignment.slug,
+            o.submitter.username)
+    zipfile = models.FileField(upload_to=upload_to)
 
 class Reading(models.Model):
     bibtex = models.TextField()

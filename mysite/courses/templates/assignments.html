@@ -9,14 +9,17 @@
 {% for assignment in course.assignments.all %}
 <h3 id="a{{ forloop.counter }}"><span class="title">#{{ forloop.counter }}: {{ assignment.title }}</span></h3>
 <div>
-  <p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
-  <div class="description">
-    {% if assignment.is_handed_out %}
-    {{ assignment.description|markdown }}
-    {% else %}
-    <p>To be handed out.</p>
-    {% endif %}
-  </div>
+<p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
+{% if assignment.is_handed_out %}
+<div class="description">
+  {{ assignment.description|markdown }}
+</div>
+  {% if assignment.is_submitted_online %}
+  <p id="submit-a{{ forloop.counter }}"><a href="{{ assignment.get_submit_url }}">Submit assignment #{{ forloop.counter }}.</a></p>
+  {% endif %}
+{% else %}
+<p>To be handed out.</p>
+{% endif %}
 </div>
 {% endfor %}
 {% endfilter %}

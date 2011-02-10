@@ -27,7 +27,9 @@ urlpatterns = patterns('',
         include(course_patterns)),
     url(r'^discuss/(?P<discussion_id>\d+)/$',
         views.discussion, name='course_discussion_view'),
-    url(r'^discuss/(?P<discussion_id>\d+)/edit/',
+    url(r'^discuss/(?P<discussion_id>\d+)/edit/$',
         views.edit_discussion, name='course_edit_discussion_view'),
+    url(r'^assignment/(?P<assignment_id>\d+)/submit/$',
+        views.submit_assignment, name='course_submit_assignment_view'),
 )
 

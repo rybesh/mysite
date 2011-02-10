@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.safestring import mark_safe
+from zipfile import ZipFile, BadZipfile
 import datetime
 
 def info(request, slug, year, semester):
@@ -91,6 +92,48 @@ def edit_discussion(request, discussion_id):
         o['form'] = form
         return render_to_response('edit_discussion.html', o,
                                   context_instance=RequestContext(request))
+
+class SubmissionForm(forms.Form):
+    zipfile = forms.FileField(help_text='Please upload a single zip archive containing all the required files for this assignment.')
+
+@login_required
+def submit_assignment(request, assignment_id):
+    o = {}
+    o['assignment'] = get_object_or_404(Assignment, id=assignment_id)
+    if not (o['assignment'].is_handed_out and 
+            o['assignment'].is_submitted_online):
+        return HttpResponseNotFound()
+    o['course'] = o['assignment'].course
+    if not o['course'].is_authorized(request.user):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = SubmissionForm(request.POST, request.FILES)
+        if form.is_valid():
+            zipfile = request.FILES['zipfile']
+            try:
+                archive = ZipFile(zipfile)
+                submission, new = o['assignment'].submissions.get_or_create(submitter=request.user)
+                if not new:
+                    submission.zipfile.delete(save=False)
+                submission.zipfile = zipfile
+                submission.save()
+                messages.success(request, 'Your zip archive was successfully uploaded.')
+            except BadZipfile:
+                messages.error(request, 'The file %s is not a valid zip archive.' % zipfile.name)
+    else:
+        try:
+            submission = o['assignment'].submissions.get(submitter=request.user)
+        except Submission.DoesNotExist:
+            pass
+        form = SubmissionForm()
+    if submission:
+        try:
+            o['files'] = ZipFile(submission.zipfile).namelist()
+        except:
+            pass
+    o['form'] = form
+    return render_to_response('submit_assignment.html', o,
+                              context_instance=RequestContext(request))
 
 def get_current_course(slug):
     today = datetime.date.today()
