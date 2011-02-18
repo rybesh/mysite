@@ -104,6 +104,7 @@ class Assignment(models.Model):
     due_date = models.DateField()
     title = models.CharField(max_length=80)
     description = models.TextField()
+    points = models.IntegerField(default=0)
     is_handed_out = models.BooleanField(default=False)
     is_submitted_online = models.BooleanField(default=False)
     def get_absolute_url(self):
@@ -130,6 +131,10 @@ class Submission(models.Model):
             o.assignment.slug,
             o.submitter.username)
     zipfile = models.FileField(upload_to=upload_to)
+    grade = models.IntegerField(default=0)
+    comments = models.TextField(blank=True)
+    def __unicode__(self):
+        return u'%s: %s' % (self.assignment, self.submitter.get_full_name())
 
 class Reading(models.Model):
     bibtex = models.TextField()
