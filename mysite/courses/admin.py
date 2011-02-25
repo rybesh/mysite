@@ -22,9 +22,12 @@ class AssignmentAdmin(admin.ModelAdmin):
 class ReadingAdmin(admin.ModelAdmin):
     ordering = ('citekey',)
 
+class SubmissionAdmin(admin.ModelAdmin):
+    list_display = ('assignment', 'submitter', 'grade')
+
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Meeting, MeetingAdmin)
 admin.site.register(Reading, ReadingAdmin)
 admin.site.register(Assignment, AssignmentAdmin)
-admin.site.register(Submission)
+admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(Instructor)
