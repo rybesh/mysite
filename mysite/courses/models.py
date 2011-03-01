@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from mysite.blog.models import Blog
 import bibutils
+import datetime
 
 class Department(models.Model):
     name = models.CharField(max_length=80)
@@ -48,6 +49,24 @@ class Course(models.Model):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     def is_authorized(self, user):
         return user.is_staff or self.has_student(user)
+    def get_date_range(self):
+        if self.semester == 'sp':
+            start_day = 1
+            start_month = 1
+            end_day = 30
+            end_month = 4
+        elif self.semester == 'fa':
+            start_day = 1
+            start_month = 8
+            end_day = 31
+            end_month = 12
+        else: # summer
+            start_day = 1
+            start_month = 5
+            end_day = 31
+            end_month = 7
+        return (datetime.date(self.year, start_month, start_day),
+                datetime.date(self.year, end_month, end_day))
     @models.permalink
     def get_absolute_url(self):
         return ('course_info_view', (), { 
@@ -107,6 +126,7 @@ class Assignment(models.Model):
     points = models.IntegerField(default=0)
     is_handed_out = models.BooleanField(default=False)
     is_submitted_online = models.BooleanField(default=False)
+    is_graded = models.BooleanField(default=False)
     def get_absolute_url(self):
         return (reverse('course_assignments_view', kwargs={ 
                     'slug': self.course.slug, 

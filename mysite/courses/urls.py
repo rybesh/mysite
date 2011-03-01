@@ -11,6 +11,8 @@ course_patterns = patterns('',
         views.guidelines, name='course_guidelines_view'),
     url(r'^assignments/$', 
         views.assignments, name='course_assignments_view'),
+    url(r'^dashboard/$', 
+        views.dashboard, name='course_dashboard_view'),
 )
 urlpatterns = patterns('',
     url(r'^(?P<slug>[a-z]+-\d+)/blog/$', 

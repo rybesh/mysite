@@ -7,7 +7,9 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
+from django.contrib.comments.models import Comment
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.db.models import Count
 from django.utils.safestring import mark_safe
 from zipfile import ZipFile, BadZipfile
 import datetime
@@ -175,8 +177,64 @@ def blog(request, slug, post_slug=None):
     return render_to_response('blog.html', o,
                               context_instance=RequestContext(request))
 
-def post(request, slug, post_slug):
-    pass
+def median(pool):
+    copy = sorted(pool)
+    size = len(copy)
+    if size % 2 == 1:
+        return copy[(size - 1) / 2]
+    else:
+        return (copy[size/2 - 1] + copy[size/2]) / 2
+
+@login_required
+def dashboard(request, slug, year, semester):
+    o = {}
+    o['course'] = get_object_or_404(
+        Course, slug=slug, year=year, semester=semester)
+    if request.user.is_staff and 'username' in request.GET:
+        o['student'] = get_object_or_404(User, username=request.GET['username'])
+    elif o['course'].has_student(request.user):
+        o['student'] = request.user
+    else:
+        return HttpResponseForbidden()
+    students = o['course'].students\
+        .filter(is_active=True)\
+        .values_list('username', flat=True)
+    blog = Blog.objects.get(slug=slug)
+    if blog:
+        o['blog_metrics'] = True
+        counts = {}
+        date_range = o['course'].get_date_range()
+        for poster in blog.posts\
+            .filter(published_at__range=date_range)\
+            .values_list('author__username', flat=True):
+            if poster in students:
+                counts.setdefault(
+                    poster, { 'post_count': 0, 'comment_count': 0 })\
+                    ['post_count'] += 1
+        for commenter in Comment.objects\
+            .filter(submit_date__range=date_range)\
+            .values_list('user__username', flat=True):
+            if commenter in students:
+                counts.setdefault(
+                    poster, { 'post_count': 0, 'comment_count': 0 })\
+                    ['comment_count'] += 1
+        o['post_count'] = counts[o['student'].username]['post_count']
+        o['post_median'] = median([ v['post_count'] for v in counts.values() ])
+        o['comment_count'] = counts[o['student'].username]['comment_count']
+        o['comment_median'] = median([ v['comment_count'] for v in counts.values() ])
+    o['assignments'] = []
+    for assignment in o['course'].assignments.filter(is_graded=True):
+        grades = {}
+        for submission in assignment.submissions.all():
+            if submission.submitter.username in students:
+                grades[submission.submitter.username] = submission.grade
+        o['assignments'].append({
+                'title': assignment.title,
+                'points': assignment.points,
+                'grade': grades[o['student'].username],
+                'median': median(grades.values()) })
+    return render_to_response('dashboard.html', o,
+                              context_instance=RequestContext(request))
 
 class BlogPostForm(forms.Form):
     title = forms.CharField(max_length=80)

@@ -13,7 +13,7 @@ class Blog(models.Model):
 
 class Post(models.Model):
     blog = models.ForeignKey('Blog', related_name='posts')
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, related_name='posts')
     display_name = models.CharField(max_length=32, blank=True)
     title = models.CharField(max_length=80)
     slug = models.SlugField(unique=True)

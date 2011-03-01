@@ -17,8 +17,9 @@ blockquote:before, blockquote:after, q:before, q:after {
 :focus { outline:0; }
 ins { text-decoration: none; }
 del { text-decoration: line-through; }
-table { width: 99%; }
-th, td { padding: 4px 0px 4px 0; }
+table { margin-top: 8px; width: 99%; }
+th { padding: 4px 0px 4px 0; text-align: left; }
+td { padding: 4px 0px 4px 4px; text-align: left; }
 tr:last-child td { border-bottom-width: 0; }
 tfoot { font-style: italic; }
 caption { background: transparent; }

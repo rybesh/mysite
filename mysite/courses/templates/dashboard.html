@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: {{ student.get_full_name }}{% endblock %}
+
+{% block content %}
+<h3><span class="title">{{ student.get_full_name }}</span></h3>
+{% if blog_metrics or assignments %}
+<table>
+{% if blog_metrics %}
+  <tbody>
+    <tr>
+      <th>Participation metrics</th>
+      <th>You</th>
+      <th>Class median</th>
+    </tr>
+    <tr>
+      <td># of blog posts</td>
+      <td >{{ post_count }}</td>
+      <td>{{ post_median }}</td>
+    </tr>
+    <tr>
+      <td># of blog comments</td>
+      <td>{{ comment_count }}</td>
+      <td>{{ comment_median }}</td>
+    </tr>
+  </tbody>
+{% endif %}
+{% if assignments %}
+  <tbody>
+    <tr>
+      <th>Assignments</th>
+      <th>You</th>
+      <th>Class median</th>
+    </tr>
+{% for assignment in assignments %}
+    <tr>
+      <td>{{ assignment.title }}</td>
+      <td>{{ assignment.grade }} / {{ assignment.points }}</td>
+      <td>{{ assignment.median }} / {{ assignment.points }}</td>
+    </tr>
+{% endfor %}
+  </tbody>
+{% endif %}
+</table>
+{% else %}
+<p>Nothing to see here yet.</p>
+{% endif %}
+{% endblock %}
