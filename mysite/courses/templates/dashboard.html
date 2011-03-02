@@ -11,7 +11,7 @@
 {% if blog_metrics %}
   <tbody>
     <tr>
-      <th>Participation metrics</th>
+      <th>Online participation metrics</th>
       <th>You</th>
       <th>Class median</th>
     </tr>
@@ -36,9 +36,12 @@
     </tr>
 {% for assignment in assignments %}
     <tr>
-      <td>{{ assignment.title }}</td>
+      <td><em>{{ assignment.title }}</em></td>
       <td>{{ assignment.grade }} / {{ assignment.points }}</td>
       <td>{{ assignment.median }} / {{ assignment.points }}</td>
+    </tr>
+    <tr>
+      <td colspan="3">{{ assignment.comments|markdown|typogrify }}</td>
     </tr>
 {% endfor %}
   </tbody>

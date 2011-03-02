@@ -73,6 +73,8 @@ h4 .title { font-size: 12px; font-weight: bold; }
 h4 { font-weight: bold; }
 h5, h6 { font-style: italic; }
 p { margin-top: 8px; }
+table p { margin: 0; }
+table p+p { margin-top: 4px; }
 li { margin: 8px 0 0 18px; }
 li p { margin: 0; }
 .reading .description { margin-top: 4px; }

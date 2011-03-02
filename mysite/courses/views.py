@@ -218,21 +218,29 @@ def dashboard(request, slug, year, semester):
                 counts.setdefault(
                     poster, { 'post_count': 0, 'comment_count': 0 })\
                     ['comment_count'] += 1
-        o['post_count'] = counts[o['student'].username]['post_count']
+        o['post_count'] = counts.setdefault(
+            o['student'].username, { 'post_count': 0, 'comment_count': 0 })\
+            ['post_count']
         o['post_median'] = median([ v['post_count'] for v in counts.values() ])
-        o['comment_count'] = counts[o['student'].username]['comment_count']
+        o['comment_count'] = counts.setdefault(
+            o['student'].username, { 'post_count': 0, 'comment_count': 0 })\
+            ['comment_count']
         o['comment_median'] = median([ v['comment_count'] for v in counts.values() ])
     o['assignments'] = []
     for assignment in o['course'].assignments.filter(is_graded=True):
         grades = {}
+        comments = ''
         for submission in assignment.submissions.all():
             if submission.submitter.username in students:
                 grades[submission.submitter.username] = submission.grade
+            if submission.submitter == o['student']:
+                comments = submission.comments
         o['assignments'].append({
                 'title': assignment.title,
                 'points': assignment.points,
-                'grade': grades[o['student'].username],
-                'median': median(grades.values()) })
+                'grade': grades.get(o['student'].username, ''),
+                'median': median(grades.values()),
+                'comments': comments })
     return render_to_response('dashboard.html', o,
                               context_instance=RequestContext(request))
 
