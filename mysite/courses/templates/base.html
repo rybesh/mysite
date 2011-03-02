@@ -20,6 +20,11 @@
           <li><a href="{{ course_url }}guidelines/">Guidelines.</a></li>
           {% endwith %}
           <li><a href="/courses/{{ course.slug }}/blog/">Blog.</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{{ course.get_absolute_url }}dashboard/">Dashboard.</a></li>
+          {% else %}
+          <li><a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">Log in.</a></li>
+          {% endif %}
         </ul>
       </nav>    
       <header>

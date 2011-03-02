@@ -18,7 +18,8 @@ def info(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
         Course, slug=slug, year=year, semester=semester)
-    return render_to_response('info.html', o)
+    return render_to_response('info.html', o,
+                              context_instance=RequestContext(request))
 
 def schedule(request, slug, year, semester):
     o = {}
@@ -48,13 +49,15 @@ def guidelines(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
         Course, slug=slug, year=year, semester=semester)
-    return render_to_response('guidelines.html', o)
+    return render_to_response('guidelines.html', o,
+                              context_instance=RequestContext(request))
 
 def assignments(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
         Course, slug=slug, year=year, semester=semester)
-    return render_to_response('assignments.html', o)
+    return render_to_response('assignments.html', o,
+                              context_instance=RequestContext(request))
 
 class DiscussionForm(forms.Form):
     questions = forms.CharField(
