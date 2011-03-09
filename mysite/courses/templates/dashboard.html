@@ -11,9 +11,14 @@
 {% if blog_metrics %}
   <tbody>
     <tr>
-      <th>Online participation metrics</th>
+      <th>Participation metrics</th>
       <th>You</th>
       <th>Class median</th>
+    </tr>
+    <tr>
+      <td># of discussions led</td>
+      <td >{{ discussion_count }}</td>
+      <td>{{ discussion_median }}</td>
     </tr>
     <tr>
       <td># of blog posts</td>

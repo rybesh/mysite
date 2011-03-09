@@ -202,32 +202,34 @@ def dashboard(request, slug, year, semester):
     students = o['course'].students\
         .filter(is_active=True)\
         .values_list('username', flat=True)
+    counts = {}
+    def setdefault(username):
+        return counts.setdefault(username, { 
+                'discussion_count': 0, 'post_count': 0, 'comment_count': 0 })
+    for leader in ReadingAssignment.objects\
+            .filter(meeting__course=o['course'])\
+            .values_list('discussion_leader__username', flat=True):
+        if leader in students:
+            setdefault(leader)['discussion_count'] += 1
+    o['discussion_count'] = setdefault(o['student'].username)['discussion_count']
+    o['discussion_median'] = median([ v['discussion_count'] for v in counts.values() ])
     blog = Blog.objects.get(slug=slug)
     if blog:
         o['blog_metrics'] = True
-        counts = {}
         date_range = o['course'].get_date_range()
         for poster in blog.posts\
             .filter(published_at__range=date_range)\
             .values_list('author__username', flat=True):
             if poster in students:
-                counts.setdefault(
-                    poster, { 'post_count': 0, 'comment_count': 0 })\
-                    ['post_count'] += 1
+                setdefault(poster)['post_count'] += 1
         for commenter in Comment.objects\
             .filter(submit_date__range=date_range)\
             .values_list('user__username', flat=True):
             if commenter in students:
-                counts.setdefault(
-                    poster, { 'post_count': 0, 'comment_count': 0 })\
-                    ['comment_count'] += 1
-        o['post_count'] = counts.setdefault(
-            o['student'].username, { 'post_count': 0, 'comment_count': 0 })\
-            ['post_count']
+                setdefault(poster)['comment_count'] += 1
+        o['post_count'] = setdefault(o['student'].username)['post_count']
         o['post_median'] = median([ v['post_count'] for v in counts.values() ])
-        o['comment_count'] = counts.setdefault(
-            o['student'].username, { 'post_count': 0, 'comment_count': 0 })\
-            ['comment_count']
+        o['comment_count'] = setdefault(o['student'].username)['comment_count']
         o['comment_median'] = median([ v['comment_count'] for v in counts.values() ])
     o['assignments'] = []
     for assignment in o['course'].assignments.filter(is_graded=True):
