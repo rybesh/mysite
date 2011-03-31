@@ -226,7 +226,7 @@ def dashboard(request, slug, year, semester):
             .filter(submit_date__range=date_range)\
             .values_list('user__username', flat=True):
             if commenter in students:
-                setdefault(poster)['comment_count'] += 1
+                setdefault(commenter)['comment_count'] += 1
         o['post_count'] = setdefault(o['student'].username)['post_count']
         o['post_median'] = median([ v['post_count'] for v in counts.values() ])
         o['comment_count'] = setdefault(o['student'].username)['comment_count']
