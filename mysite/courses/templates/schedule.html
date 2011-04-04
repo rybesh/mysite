@@ -14,7 +14,8 @@
 <p><strong>This schedule is still in flux.</strong> Specifically, the parts in <span class="tentative">gray</span> are subject to change.</p>
 <div id="accordion">
 {% for entry in schedule %}
-<h3{% if entry.next %} id="next"{% endif %}>
+{% if entry.next %}<span id="next"></span>{% endif %}
+<h3 id="on-{{ entry.date|date:"m-d" }}">
 {% if entry.is_holiday %}
 {% with entry as holiday %}
   <!--<a href="#">-->
@@ -47,6 +48,11 @@
   </p>
   {% endif %}
   <div class="description">{{ meeting.description|markdown }}</div>
+  {% if user_is_authorized %}
+  {% if meeting.slides %}
+  <p>Download <a href="{{ meeting.slides.url }}">slides</a> for this class.</p>
+  {% endif %}
+  {% endif %}
   {% if meeting.has_readings %}
   <p>To read <strong>before</strong> this class:</p>
   <ol class="readings">

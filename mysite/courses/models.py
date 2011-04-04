@@ -88,6 +88,13 @@ class Meeting(models.Model):
     topics = models.ManyToManyField('Topic', blank=True)
     readings = models.ManyToManyField('Reading', through='ReadingAssignment', blank=True)
     is_tentative = models.BooleanField(default=True)
+    def upload_to(o, filename):
+        return 'courses/%s/%s/%s/slides/%s.pdf' % (
+            o.course.slug, 
+            o.course.year, 
+            o.course.semester, 
+            o.date.strftime('%m-%d'))
+    slides = models.FileField(upload_to=upload_to, blank=True, null=True)
     def has_readings(self):
         return len(self.readings.all()) > 0
     def reading_list(self):
