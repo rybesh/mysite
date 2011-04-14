@@ -13,7 +13,7 @@ def deploy(request):
     try:
         management.call_command('syncdb', noinput=True)
         print
-        for app in [ 'blog', 'courses' ]:
+        for app in [ 'blog', 'courses', 'reading' ]:
             management.call_command('migrate', app, noinput=True)
             print
     except:
