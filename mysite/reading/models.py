@@ -2,9 +2,8 @@ from django.db import models
 from mysite.shared import bibutils
 
 class Text(models.Model):
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=80)
     bibtex = models.TextField()
-    bibfields = None
     markdown = models.TextField()
     image = models.ImageField(
         upload_to=lambda o, filename: 'images/reading/%s.png' % o.slug)
@@ -14,10 +13,8 @@ class Text(models.Model):
     citation_key = models.CharField(max_length=32, unique=True)
     related_texts = models.ManyToManyField('self')
     def bibvalue(self, key):
-        if not self.bibfields:
-            entries = bibutils.parse(self.bibtex).entries
-            self.bibfields = entries[self.citation_key].fields
-        value = self.bibfields.get(key, None)
+        entries = bibutils.parse(self.bibtex).entries
+        value = entries[self.citation_key].fields.get(key, None)
         if value is not None:
             value = value.strip('{ }')
         return value

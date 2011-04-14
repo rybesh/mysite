@@ -30,7 +30,10 @@ class Command(BaseCommand):
             text.bibtex = bibutils.extract(bib, citekey)
             if text.bibtex is None:
                 raise CommandError('No citekey %s in %s' % (citekey, args[1]))
-            text.slug = slugify(text.title())
+            slug = slugify(text.title())
+            while len(slug) > Text._meta.get_field('slug').max_length:
+                slug = '-'.join(slug.split('-')[:-1])
+            text.slug = slug
             text.save()
             if 'Related' in metadata:
                 for citekey in metadata['Related'].split(','):
