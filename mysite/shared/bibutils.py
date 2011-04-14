@@ -1,12 +1,27 @@
-from pybtex.database.input import bibtex
+from pybtex.database import BibliographyData
+from pybtex.database.input import bibtex as bibtex_in
+from pybtex.database.output import bibtex as bibtex_out
 from pybtex.style.formatting import custom
 from pybtex.backends import html, plaintext
 from django.utils.safestring import mark_safe
 from StringIO import StringIO
 
 def parse(bib):
-    parser = bibtex.Parser()
+    parser = bibtex_in.Parser()
     return parser.parse_stream(StringIO(bib))
+
+def parse_file(filename):
+    parser = bibtex_in.Parser()
+    return parser.parse_file(filename)
+
+def extract(bibdata, citekey):
+    if not citekey in bibdata.entries:
+        return None
+    entries = { citekey: bibdata.entries[citekey] }
+    writer = bibtex_out.Writer()
+    output = StringIO()
+    writer.write_stream(BibliographyData(entries), output)
+    return output.getvalue()
 
 def citekeys(bib):
     return parse(bib).entries.keys()
