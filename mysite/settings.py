@@ -85,6 +85,8 @@ INSTALLED_APPS = (
     'mysite.blog',
     'mysite.courses',
     'mysite.comments',
+    'mysite.reading',
+    #'mysite.writing',
 )
 
 COMMENTS_APP = 'mysite.comments'
