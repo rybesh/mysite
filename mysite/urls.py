@@ -24,6 +24,8 @@ urlpatterns = patterns('',
     (r'^favicon.ico$', 'django.views.generic.simple.redirect_to', 
      { 'url': '/media/img/favicon.ico' }),
 
+    (r'^reading/', include('mysite.reading.urls')),
+
     (r'^courses/', include('mysite.courses.urls')),
 
     url(r'^comments/post/$', 'mysite.comments.views.post_comment', 

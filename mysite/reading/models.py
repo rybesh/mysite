@@ -2,7 +2,7 @@ from django.db import models
 from mysite.shared import bibutils
 
 class Text(models.Model):
-    slug = models.SlugField(unique=True, max_length=80)
+    slug = models.SlugField(max_length=80, unique=True)
     bibtex = models.TextField()
     markdown = models.TextField()
     image = models.ImageField(
@@ -10,13 +10,16 @@ class Text(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     status = models.CharField(max_length=16)
-    citation_key = models.CharField(max_length=32, unique=True)
+    citation_key = models.CharField(max_length=32, unique=True, db_index=True)
     related_texts = models.ManyToManyField('self')
     def bibvalue(self, key):
-        entries = bibutils.parse(self.bibtex).entries
-        value = entries[self.citation_key].fields.get(key, None)
-        if value is not None:
-            value = value.strip('{ }')
+        entry = bibutils.parse(self.bibtex).entries[self.citation_key]
+        if key in ['author']:
+            value = entry.persons.get(key, None)
+        else:
+            value = entry.fields.get(key, None)
+            if value is not None:
+                value = value.strip('{ }')
         return value
     def title(self):
         title = self.bibvalue('title')
@@ -33,15 +36,19 @@ class Text(models.Model):
             if title and (': ' in title):
                 subtitle = title.split(': ', 1)[1]
         return subtitle
+    def authors(self):
+        return self.bibvalue('author')
+    def year(self):
+        return self.bibvalue('year')
     def url(self):
         return self.bibvalue('url')
     def __unicode__(self):
         return self.title()
 
 class Note(models.Model):
-    text = models.ForeignKey('Text')
+    text = models.ForeignKey('Text', related_name='notes')
     markdown = models.TextField()
-    created = models.DateTimeField(unique=True)
+    created = models.DateTimeField(unique=True, db_index=True)
     modified = models.DateTimeField()
     status = models.CharField(max_length=16)
     def __unicode__(self):

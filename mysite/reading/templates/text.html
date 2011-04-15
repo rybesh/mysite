@@ -1,0 +1,70 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Notes on "{{ text.title }}"</title>
+  <meta name="description" content="Short synopsis of and notes on &quot;{{ text.title }}.&quot;"/>
+  <meta name="author" content="Ryan Shaw"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/media/css/style.css"/>
+  <script src="/media/js/libs/modernizr-1.7.min.js"></script>
+</head>
+<body>
+  {% load markdown typogrify timeago %}
+  <div id="wrapper">
+    <article id="main">
+      <header>
+        {% if text.subtitle %}
+        <hgroup>
+          {% endif %}      
+          <h1>{{ text.title }}</h1>
+          {% if text.subtitle %}
+          <h2>{{ text.subtitle }}</h2>
+        </hgroup>
+        {% endif %}
+      </header>
+      <div class="group">
+        <details>
+          <dl>
+            {% if text.authors|length > 1 %}
+            <dt>Authors</dt>
+            <dd>
+              <ul>
+                {% for author in text.authors %}
+                <li>{{ author }}</li>
+                {% endfor %}
+              </ul>
+            </dd>
+            {% else %}
+            <dt>Author</dt>
+            <dd>{{ text.authors|first }}</dd>
+            {% endif %}
+            <dt>Year</dt>
+            <dd>{{ text.year }}</dd>
+            <dt>Link</dt>
+            <dd><a href="{{ text.url }}">{{ text.domain }}</a></dd>
+          </dl>
+        </details>
+        <a href="{{ text.url }}">
+          <img class="representative" src="{{ text.image.url }}" width="{{ text.image.width }}" height="{{ text.image.height }}"/>
+        </a>
+        {{ text.markdown|markdown }}
+      </div>
+      <section id="notes">
+        <h1>Notes</h1>
+        {% for note in text.notes %}
+        <article>
+          <header>
+            <h2>{{ note.created|timeago:"F j, Y" }}</h2>
+          </header>
+          {{ note.markdown|markdown }}
+        </article>
+        {% endfor %}
+      </section>
+    </article>
+  </div>
+</body>
