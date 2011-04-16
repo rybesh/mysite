@@ -56,9 +56,43 @@ a:link { -webkit-tap-highlight-color: #EF0081; }
 
 /* primary */
 
+html * {
+    color-profile: srgb;
+}
+
 body {
     color: #073642;
-    background: #eee8d5;
+    background-color: #eee8d5;
+}
+
+body > header {
+    background-color: #93A1A1;
+}
+
+nav li, nav h1 { 
+    display: inline;
+}
+
+nav a {
+    color: #586E75 !important;
+    text-decoration: none;
+    display: inline-block;
+    padding: 4px 10px;
+}
+
+nav a:hover { 
+    color: #fdf6e3 !important;
+    background: transparent; 
+}
+
+nav h1 a {
+    color: #eee8d5 !important;
+    background-color: #d33682;
+}
+
+nav h1 a:hover {
+    color: #fdf6e3 !important;
+    background-color: #d33682;
 }
 
 #wrapper {
@@ -67,7 +101,6 @@ body {
 }
 
 h1, h2 { 
-    /*font-weight: bold;*/
     color: #d33682;
 }
 
@@ -152,7 +185,7 @@ section {
 #notes article blockquote p {
     margin: 0px;
     padding-left: 10px;
-    max-width: 500px;
+    max-width: 474px;
 }
 
 /* font */
@@ -182,9 +215,16 @@ section {
 
 body {
     font-family: CharisSILRegular, 'Palatino Linotype', Palatino, 'URW Palladio L', serif;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.5;
 }
+
+nav {
+    font-family: MuseoSans500, Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+nav h1 { font-size: 100% }
 
 h1 { font-size: 26px; }
 
@@ -192,6 +232,7 @@ h2, #notes h1 {
     font-family: MuseoSans500, Arial, Helvetica, sans-serif;
     font-size: 14px; 
     text-transform: uppercase; 
+    letter-spacing: 0.1em;
 }
 
 details {

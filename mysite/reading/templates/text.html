@@ -6,8 +6,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Notes on "{{ text.title }}"</title>
-  <meta name="description" content="Short synopsis of and notes on &quot;{{ text.title }}.&quot;"/>
+  <title>Ryan Shaw's notes on "{{ text.title }}"</title>
+  <meta name="description" 
+        content="Short synopsis of and notes on &quot;{{ text.title }}.&quot;"/>
   <meta name="author" content="Ryan Shaw"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="/media/css/style.css"/>
@@ -15,6 +16,14 @@
 </head>
 <body>
   {% load markdown typogrify timeago %}
+  <header>
+    <nav>
+      <ul>
+        <li><h1><a href="/">Ryan Shaw</a></h1></li>
+        <li><a href="/reading/">reading</a></li>
+      </ul>
+    </nav>
+  </header>
   <div id="wrapper">
     <article id="main">
       <header>
@@ -50,9 +59,12 @@
           </dl>
         </details>
         <a href="{{ text.url }}">
-          <img class="representative" src="{{ text.image.url }}" width="{{ text.image.width }}" height="{{ text.image.height }}"/>
+          <img class="representative" src="{{ text.image.url }}" 
+               width="{{ text.image.width }}" height="{{ text.image.height }}"/>
         </a>
-        {{ text.markdown|markdown }}
+        <div class="sweet-justice">
+          {{ text.markdown|markdown|typogrify }}
+        </div>
       </div>
       <section id="notes">
         <h1>Notes</h1>
@@ -61,10 +73,16 @@
           <header>
             <h2>{{ note.created|timeago:"F j, Y" }}</h2>
           </header>
-          {{ note.markdown|markdown }}
+          <div class="sweet-justice">
+            {{ note.markdown|markdown|typogrify }}
+          </div>
         </article>
         {% endfor %}
       </section>
     </article>
   </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
+  <script>window.jQuery || document.write("<script src='/media/js/libs/jquery-1.5.2.min.js'>\x3C/script>")</script>
+  <script src="/media/js/plugins.js"></script>
+  <script src="/media/js/script.js"></script>
 </body>
