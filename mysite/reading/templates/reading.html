@@ -1,0 +1,39 @@
+{% extends "boilerplate.html" %}
+
+{% block title %}Ryan Shaw's reading notes{% endblock %}
+
+{% block description %}Short synopses of and notes on things Ryan Shaw has read.{% endblock %}
+
+{% load markdown typogrify %}
+
+{% block main %}
+<div id="main">
+  <header>
+    <h1>Reading Notes</h1>
+  </header>
+  <ul class="index-list">
+    {% for text in texts %}
+    <li class="group">
+      <a class="block" href="{{ text.absolute_url }}">
+      <img class="representative" src="{{ text.small_image.url }}" 
+           width="{{ text.small_image.width }}" height="{{ text.small_image.height }}"/>
+      <hgroup>
+        <h2>{{ text.title }}</h2>
+        <h3>
+          <ul class="inline">
+            {% for author in text.authors %}
+            <li>{{ author }}</li>
+            {% endfor %}
+          </ul>
+          {{ text.year }}
+        </h3>
+      </hgroup>
+      <div class="sweet-justice">
+        {{ text.synopsis|typogrify }}
+      </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

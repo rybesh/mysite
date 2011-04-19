@@ -1,30 +1,12 @@
-<!doctype html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Ryan Shaw's notes on "{{ text.title }}"</title>
-  <meta name="description" 
-        content="Short synopsis of and notes on &quot;{{ text.title }}.&quot;"/>
-  <meta name="author" content="Ryan Shaw"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/media/css/style.css"/>
-  <script src="/media/js/libs/modernizr-1.7.min.js"></script>
-</head>
-<body>
-  {% load markdown typogrify timeago %}
-  <header>
-    <nav>
-      <ul>
-        <li><h1><a href="/">Ryan Shaw</a></h1></li>
-        <li><a href="/reading/">reading</a></li>
-      </ul>
-    </nav>
-  </header>
-  <div id="wrapper">
+{% extends "boilerplate.html" %}
+
+{% block title %}Ryan Shaw's notes on "{{ text.title }}"{% endblock %}
+
+{% block description %}Short synopsis of and notes on &quot;{{ text.title }}.&quot;{% endblock %}
+
+{% load markdown typogrify timeago %}
+
+{% block main %}
     <article id="main">
       <header>
         {% if text.subtitle %}
@@ -80,9 +62,4 @@
         {% endfor %}
       </section>
     </article>
-  </div>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
-  <script>window.jQuery || document.write("<script src='/media/js/libs/jquery-1.5.2.min.js'>\x3C/script>")</script>
-  <script src="/media/js/plugins.js"></script>
-  <script src="/media/js/script.js"></script>
-</body>
+{% endblock %}

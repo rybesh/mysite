@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.views.generic.simple import redirect_to
+from django.views.generic.simple import redirect_to, direct_to_template
 
 admin.autodiscover()
 
@@ -17,12 +17,12 @@ def loggedin(request):
 urlpatterns = patterns('',
     url(r'^deploy/$', 'mysite.shared.views.deploy', name='shared_deploy_view'),
 
-    (r'^$', redirect_to, { 
-            'url': 'http://people.ischool.berkeley.edu/~ryanshaw/wordpress/bio/',
-            'permanent': False }),
+    (r'^$', direct_to_template, { 'template': 'bio.html' }),
 
-    (r'^favicon.ico$', 'django.views.generic.simple.redirect_to', 
-     { 'url': '/media/img/favicon.ico' }),
+    (r'^dissertation/$', direct_to_template, 
+     { 'template': 'dissertation.html' }),
+
+    (r'^favicon.ico$', redirect_to, { 'url': '/media/img/favicon.ico' }),
 
     (r'^reading/', include('mysite.reading.urls')),
 

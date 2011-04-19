@@ -16,7 +16,7 @@ class Command(BaseCommand):
             o.created = datetime.strptime(metadata['Created'], DATETIME_FMT)
             o.modified = datetime.strptime(metadata['Modified'], DATETIME_FMT)
             o.status = metadata['Status']
-        def create_or_update_text(metadata, markdown):
+        def create_or_update_text(metadata, markdown, synopsis):
             if not 'Citation Key' in metadata:
                 raise CommandError(
                     'text metadata is missing a citation key:\n%s' % metadata)
@@ -27,6 +27,7 @@ class Command(BaseCommand):
                 text = Text(citation_key=citekey)
             update_metadata(text, metadata)
             text.markdown = '\n'.join(markdown)
+            text.synopsis = synopsis
             text.bibtex = bibutils.extract(bib, citekey)
             if text.bibtex is None:
                 raise CommandError('No citekey %s in %s' % (citekey, args[1]))
@@ -54,7 +55,7 @@ class Command(BaseCommand):
         with open(args[0]) as f:
             state = 'start'
             skip = True
-            metadata = markdown = text = note = None
+            metadata = synopsis = markdown = text = note = None
             for line in f:
                 if skip:
                     skip = False
@@ -76,10 +77,19 @@ class Command(BaseCommand):
                     else:
                         state = state.replace('metadata', 'markdown')
                         markdown = []
+                elif state == 'text_synopsis':
+                    if line == '**Text**':
+                        state = 'text_markdown'
+                    else:
+                        synopsis = line
+                        skip = True
                 elif state == 'text_markdown':
-                    if line == '----':
+                    if line == '**Synopsis**':
+                        state = 'text_synopsis'
+                    elif line == '----':
                         markdown = markdown[:-1]
-                        text = create_or_update_text(metadata, markdown)
+                        text = create_or_update_text(
+                            metadata, markdown, synopsis)
                         state = 'start'
                     else:
                         markdown.append(line)

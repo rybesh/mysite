@@ -1,0 +1,35 @@
+{% extends "boilerplate.html" %}
+
+{% block title %}Ryan Shaw{% endblock %}
+
+{% block description %}Assistant professor at the University of North Carolina at Chapel Hill.{% endblock %}
+
+{% load typogrify %}
+
+{% block main %}
+<article id="main">
+  <header><h1>Ryan Shaw</h1></header>
+  <div class="group">
+    <details>
+      <dt>Email</dt>
+      <dd>ryanshaw@unc.edu</dd>
+      <dt>Twitter</dt>
+      <dd><a href="http://twitter.com/rybesh">@rybesh</a></dd>
+      <dt>Phone</dt>
+      <dd>+1-919-636-9660</dd>
+      <dt>Office</dt>
+      <dd>214A Manning Hall</dd>
+    </details>
+    <img class="representative" src="/media/img/me_bw.jpg" width="300" height="300"/>
+    <p class="sweet-justice">
+      I'm an assistant professor in the <a
+      href="http://sils.unc.edu/">School of Information and Library
+      Science</a> at the University of North Carolina at Chapel
+      Hill. My research focuses on how events and periods are used as
+      conceptual structures for digitally organizing narrative
+      information across different types of media, and how information
+      systems might better support the expression of multiple
+      perspectives on events and their relationships.
+    </p>
+</article>
+{% endblock %}
