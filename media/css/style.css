@@ -98,6 +98,7 @@ nav h1 a {
 nav h1 a:hover {
     color: white !important;
     background-color: #d33682;
+    text-shadow: 1px 1px 6px #fff;
 }
 
 #wrapper {
