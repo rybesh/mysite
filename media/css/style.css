@@ -337,7 +337,7 @@ dt { font-weight: bold; }
 }
 
 @media screen and (max-width: 575px) {
-    details {
+    dl {
         float: none;
     }
 }
