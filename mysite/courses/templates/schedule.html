@@ -11,7 +11,9 @@
 {% endcomment %}
 
 {% block content %}
+{% if in_flux %}
 <p><strong>This schedule is still in flux.</strong> Specifically, the parts in <span class="tentative">gray</span> are subject to change.</p>
+{% endif %}
 <div id="accordion">
 {% for entry in schedule %}
 {% if entry.next %}<span id="next"></span>{% endif %}

@@ -31,8 +31,10 @@ def schedule(request, slug, year, semester):
     for i, assignment in enumerate(o['course'].assignments.all()):
         assignment.number = (i + 1)
         assignments[assignment.due_date] = assignment
+    o['in_flux'] = False
     for meeting in o['meetings']:
         meeting.assignment_due = assignments.get(meeting.date, None)
+        if meeting.is_tentative: o['in_flux'] = True
     
     o['schedule'] = o['meetings'] + o['holidays']
     o['schedule'].sort(key=lambda x: x.date)
