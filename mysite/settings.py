@@ -1,9 +1,12 @@
 # Django settings for mysite project.
 
 import os
+from silversupport.env import is_production
+from silversupport.secret import get_secret
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+if not is_production():
+    DEBUG = True
+    TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('Ryan Shaw', 'ryanshaw@unc.edu'),
@@ -40,7 +43,6 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/loggedin/'
 LOGOUT_URL = '/logout/'
 
-from silversupport.secret import get_secret
 SECRET_KEY = get_secret()
 
 TEMPLATE_LOADERS = (
@@ -67,6 +69,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'mysite.middleware.ShortURLMiddleware'
 )
 
 ROOT_URLCONF = 'mysite.urls'
@@ -80,6 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.comments',
     'south',
+    'shorturls',
     #'haystack',
     'mysite.shared',
     'mysite.blog',
@@ -90,6 +94,12 @@ INSTALLED_APPS = (
 )
 
 COMMENTS_APP = 'mysite.comments'
+
+SHORT_BASE_URL = 'http://aesh.in/'
+SHORTEN_FULL_BASE_URL = 'http://aeshin.org/'
+SHORTEN_MODELS = {
+    'T': 'reading.text',
+}
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'
 #HAYSTACK_SEARCH_ENGINE = 'xapian'

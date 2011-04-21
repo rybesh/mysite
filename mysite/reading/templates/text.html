@@ -4,7 +4,10 @@
 
 {% block description %}Short synopsis of and notes on &quot;{{ text.title }}.&quot;{% endblock %}
 
-{% load markdown typogrify timeago %}
+{% load markdown typogrify timeago shorturl %}
+
+{% block links %}
+  <link rel="shortlink" href="{% shorturl text %}"/>{% endblock %}
 
 {% block main %}
     <article id="main">
@@ -21,18 +24,18 @@
       <div class="group">
         <details>
           <dl>
-            {% if text.authors|length > 1 %}
+            {% if text.authorlist|length > 1 %}
             <dt>Authors</dt>
             <dd>
               <ul>
-                {% for author in text.authors %}
+                {% for author in text.authorlist %}
                 <li>{{ author }}</li>
                 {% endfor %}
               </ul>
             </dd>
             {% else %}
             <dt>Author</dt>
-            <dd>{{ text.authors|first }}</dd>
+            <dd>{{ text.authorlist|first }}</dd>
             {% endif %}
             <dt>Year</dt>
             <dd>{{ text.year }}</dd>
@@ -50,7 +53,7 @@
       </div>
       <section id="notes">
         <h1>Notes</h1>
-        {% for note in text.notes %}
+        {% for note in text.notes.all %}
         <article>
           <header>
             <h2>{{ note.created|timeago:"F j, Y" }}</h2>

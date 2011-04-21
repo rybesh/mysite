@@ -24,6 +24,8 @@ urlpatterns = patterns('',
 
     (r'^favicon.ico$', redirect_to, { 'url': '/media/img/favicon.ico' }),
 
+    (r'^short/', include('shorturls.urls')),
+
     (r'^reading/', include('mysite.reading.urls')),
 
     (r'^courses/', include('mysite.courses.urls')),

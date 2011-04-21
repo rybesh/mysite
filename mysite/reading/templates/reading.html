@@ -14,14 +14,14 @@
   <ul class="index-list">
     {% for text in texts %}
     <li class="group">
-      <a class="block" href="{{ text.absolute_url }}">
+      <a class="block" href="{{ text.get_absolute_url }}">
       <img class="representative" src="{{ text.small_image.url }}" 
            width="{{ text.small_image.width }}" height="{{ text.small_image.height }}"/>
       <hgroup>
         <h2>{{ text.title }}</h2>
         <h3>
           <ul class="inline">
-            {% for author in text.authors %}
+            {% for author in text.authorlist %}
             <li>{{ author }}</li>
             {% endfor %}
           </ul>
