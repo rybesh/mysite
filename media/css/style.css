@@ -2,7 +2,7 @@
 
 html, body, div, span, h1, h2, h3, p, blockquote, 
 cite, em, img, q, strong, dl, dt, dd, ol, ul, li, time, mark,
-article, details, footer, header, hgroup, menu, nav, section {
+article, footer, header, hgroup, menu, nav, section {
     margin: 0;
     padding: 0;
     border: 0;
@@ -11,7 +11,7 @@ article, details, footer, header, hgroup, menu, nav, section {
     vertical-align: baseline;
 }
 
-article, details, footer, header, hgroup, menu, nav, section {
+article, dl, footer, header, hgroup, menu, nav, section {
     display: block;
 }
 
@@ -134,7 +134,7 @@ a:hover { background-color: #eee8d5; }
     padding: 20px 0px;
 }
 
-details {
+dl {
     float: left;
     margin-right: 40px;
     max-width: 160px;
@@ -300,7 +300,7 @@ article h2, #notes h1, h3 {
     letter-spacing: 0.1em;
 }
 
-details {
+dl {
     font-family: MuseoSans500, Arial, Helvetica, sans-serif;
     font-size: 15px;
 }

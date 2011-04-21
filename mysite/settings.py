@@ -69,7 +69,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'mysite.middleware.ShortURLMiddleware'
+    'mysite.middleware.ShortURLMiddleware',
+    'mysite.middleware.XUACompatibleMiddleware',
 )
 
 ROOT_URLCONF = 'mysite.urls'

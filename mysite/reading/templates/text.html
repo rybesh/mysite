@@ -22,29 +22,27 @@
         {% endif %}
       </header>
       <div class="group">
-        <details>
-          <dl>
-            {% if text.authorlist|length > 1 %}
-            <dt>Authors</dt>
-            <dd>
-              <ul>
-                {% for author in text.authorlist %}
-                <li>{{ author }}</li>
-                {% endfor %}
-              </ul>
-            </dd>
-            {% else %}
-            <dt>Author</dt>
-            <dd>{{ text.authorlist|first }}</dd>
-            {% endif %}
-            <dt>Year</dt>
-            <dd>{{ text.year }}</dd>
-            <dt>Link</dt>
-            <dd><a href="{{ text.url }}">{{ text.domain }}</a></dd>
-          </dl>
-        </details>
+        <dl>
+          {% if text.authorlist|length > 1 %}
+          <dt>Authors</dt>
+          <dd>
+            <ul>
+              {% for author in text.authorlist %}
+              <li>{{ author }}</li>
+              {% endfor %}
+            </ul>
+          </dd>
+          {% else %}
+          <dt>Author</dt>
+          <dd>{{ text.authorlist|first }}</dd>
+          {% endif %}
+          <dt>Year</dt>
+          <dd>{{ text.year }}</dd>
+          <dt>Link</dt>
+          <dd><a href="{{ text.url }}">{{ text.domain }}</a></dd>
+        </dl>
         <a href="{{ text.url }}">
-          <img class="representative" src="{{ text.image.url }}" 
+          <img class="representative" alt="{{ text.title }}" src="{{ text.image.url }}" 
                width="{{ text.image.width }}" height="{{ text.image.height }}"/>
         </a>
         <div class="sweet-justice">
