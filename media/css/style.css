@@ -134,6 +134,17 @@ a:hover { background-color: #eee8d5; }
     padding: 20px 0px;
 }
 
+#main.talk > header {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+.slidelink {
+    height: 30px;
+    width: 30px;
+    background-image: url(/media/img/slidelink.png);
+}
+
 dl {
     float: left;
     margin-right: 40px;

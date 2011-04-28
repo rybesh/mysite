@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'mysite.courses',
     'mysite.comments',
     'mysite.reading',
+    'mysite.talking',
     #'mysite.writing',
 )
 
@@ -100,6 +101,7 @@ SHORT_BASE_URL = 'http://aesh.in/'
 SHORTEN_FULL_BASE_URL = 'http://aeshin.org/'
 SHORTEN_MODELS = {
     'T': 'reading.text',
+    'S': 'talking.talk',
 }
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'

@@ -1,0 +1,28 @@
+{% extends "boilerplate.html" %}
+
+{% block title %}Ryan Shaw: {{ talk.title }}{% if talk.subtitle %}: {{ talk.subtitle }}{% endif %}{% endblock %}
+
+{% block description %}Slides from talk given Ryan Shaw at {{ talk.location }} on {{ talk.date|date:"F j, Y" }}.{% endblock %}
+
+{% load timeago shorturl %}
+
+{% block links %}
+  <link rel="shortlink" href="{% shorturl talk %}"/>{% endblock %}
+
+{% block main %}
+    <article id="main" class="talk">
+      <header>
+        <hgroup>
+          <h1>{{ talk.title }}</h1>
+          {% if talk.subtitle %}
+          <h2>{{ talk.subtitle }}</h2>
+          {% endif %}
+          <h3>{{ talk.location }}, {{ talk.date|dateago:"F j, Y" }}</h3>
+        </hgroup>
+      </header>
+      <div class="embed">
+        {{ talk.embed|safe }}
+      </div>
+      <p>Click the arrow button on the far right to view larger.</p>
+    </article>
+{% endblock %}

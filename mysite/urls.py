@@ -18,7 +18,6 @@ urlpatterns = patterns('',
     url(r'^deploy/$', 'mysite.shared.views.deploy', name='shared_deploy_view'),
 
     (r'^$', direct_to_template, { 'template': 'bio.html' }),
-
     (r'^dissertation/$', direct_to_template, 
      { 'template': 'dissertation.html' }),
 
@@ -27,17 +26,15 @@ urlpatterns = patterns('',
     (r'^short/', include('shorturls.urls')),
 
     (r'^reading/', include('mysite.reading.urls')),
-
+    (r'^talking/', include('mysite.talking.urls')),
     (r'^courses/', include('mysite.courses.urls')),
 
     url(r'^comments/post/$', 'mysite.comments.views.post_comment', 
         name='comments_post_comment_view'),
-
     (r'^comments/', include('django.contrib.comments.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 
     (r'^loggedin/$', loggedin),
-
     (r'', include('django.contrib.auth.urls')),
 )
