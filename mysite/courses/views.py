@@ -1,7 +1,7 @@
 from models import *
 from mysite.blog.models import Blog, Post
 from django import forms
-from django.http import HttpResponseForbidden, Http404
+from django.http import HttpResponse, HttpResponseForbidden, Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.contrib import messages
@@ -12,7 +12,9 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 from zipfile import ZipFile, BadZipfile
+from StringIO import StringIO
 import datetime
+import csv
 
 def info(request, slug, year, semester):
     o = {}
@@ -190,13 +192,32 @@ def median(pool):
     else:
         return (copy[size/2 - 1] + copy[size/2]) / 2
 
+def grades_csv(course):
+    assignments = course.assignments.filter(is_graded=True)
+    table = [ ['Name'] + [ a.title for a in assignments ] ] 
+    for s in course.students.filter(is_active=True):
+        row = [s.get_full_name()]
+        for a in assignments:
+            try:
+                row.append(a.submissions.get(submitter=s).grade)
+            except Submission.DoesNotExist:
+                row.append('')
+        table.append(row)
+    buf = StringIO() 
+    csv.writer(buf).writerows(table)
+    return HttpResponse(buf.getvalue(), 'text/csv')
+
 @login_required
 def dashboard(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
         Course, slug=slug, year=year, semester=semester)
-    if request.user.is_staff and 'username' in request.GET:
-        o['student'] = get_object_or_404(User, username=request.GET['username'])
+    if request.user.is_superuser:
+        if 'username' in request.GET:
+            o['student'] = get_object_or_404(
+                User, username=request.GET['username'])
+        else:
+            return grades_csv(o['course'])
     elif o['course'].has_student(request.user):
         o['student'] = request.user
     else:
