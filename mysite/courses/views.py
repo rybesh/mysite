@@ -131,14 +131,19 @@ def submit_assignment(request, assignment_id):
             except BadZipfile:
                 messages.error(request, 'The file %s is not a valid zip archive.' % zipfile.name)
     else:
+        submitter=request.user.username
+        if request.user.is_superuser and 'username' in request.GET:
+            submitter = request.GET['username']
         try:
-            submission = o['assignment'].submissions.get(submitter=request.user)
+            submission = o['assignment'].submissions.get(
+                submitter__username=submitter)
         except Submission.DoesNotExist:
             pass
         form = SubmissionForm()
     if submission:
         try:
             o['files'] = ZipFile(submission.zipfile).namelist()
+            o['zipfile_url'] = submission.zipfile.url
         except:
             pass
     o['form'] = form
