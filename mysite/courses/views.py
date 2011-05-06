@@ -151,15 +151,10 @@ def submit_assignment(request, assignment_id):
                               context_instance=RequestContext(request))
 
 def get_current_course(slug):
-    today = datetime.date.today()
-    if today.month in range(1,5):
-        current_semester = 'sp'
-    elif today.month in range(5,8):
-        current_semester = 'su'
-    else:
-        current_semester = 'fa'
-    return Course.objects.get(
-        slug=slug, year=today.year, semester=current_semester)
+    courses = list(Course.objects.filter(slug=slug).order_by('id'))
+    if len(courses) == 0:
+        raise Course.DoesNotExist
+    return courses[-1]
 
 def blog(request, slug, post_slug=None):
     o = {}
