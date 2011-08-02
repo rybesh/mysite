@@ -42,7 +42,7 @@ class Course(models.Model):
     title = models.CharField(max_length=80)
     semester = models.CharField(max_length=2, choices=SEMESTER_CHOICES)
     year = models.IntegerField(choices=YEAR_CHOICES)
-    times = models.CharField(max_length=32)
+    times = models.CharField(max_length=64)
     location = models.CharField(max_length=32)
     description = models.TextField()
     def has_student(self, student):
