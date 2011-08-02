@@ -13,6 +13,9 @@
       {% load markdown typogrify %}
       <nav>
         <ul class="nav">
+          {% if user.is_superuser %}
+          <li><a href="/admin/">Admin.</a>
+          {% endif %}
           {% with course.get_absolute_url as course_url %}
           <li><a href="{{ course_url }}">Basic info.</a></li>
           <li><a href="{{ course_url }}schedule/#next">Schedule.</a></li>
