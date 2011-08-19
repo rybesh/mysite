@@ -14,7 +14,7 @@
   <ul class="courses index-list">
     {% for course in courses %}
     <li class="course group">
-      <a class="block" href="{{ text.get_absolute_url }}">
+      <a class="block" href="{{ course.get_absolute_url }}">
       <hgroup>
         <h2>{{ course.title }}</h2>
         <h3>{{ course.get_semester_display }} {{ course.year }}</h3>
