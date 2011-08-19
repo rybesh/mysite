@@ -13,10 +13,7 @@ class Department(models.Model):
 
 class Instructor(models.Model):
     name = models.CharField(max_length=9)
-    email = models.EmailField()
-    phone = models.CharField(max_length=14)
-    office = models.CharField(max_length=12)
-    office_hours = models.CharField(max_length=32)
+    url = models.URLField()
     def __unicode__(self):
         return self.name
 
@@ -45,6 +42,7 @@ class Course(models.Model):
     times = models.CharField(max_length=64)
     location = models.CharField(max_length=32)
     description = models.TextField()
+    is_archived = models.BooleanField(default=False)
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     def is_authorized(self, user):
@@ -85,7 +83,6 @@ class Meeting(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=80)
     description = models.TextField(blank=True)
-    topics = models.ManyToManyField('Topic', blank=True)
     readings = models.ManyToManyField('Reading', through='ReadingAssignment', blank=True)
     is_tentative = models.BooleanField(default=True)
     def upload_to(o, filename):
@@ -99,8 +96,6 @@ class Meeting(models.Model):
         return len(self.readings.all()) > 0
     def reading_list(self):
         return self.readings.all().order_by('readingassignment__order')
-    def get_topic_names(self):
-        return self.topics.values_list('name', flat=True)
     def __unicode__(self):
         return u'%s: %s' % (self.date.strftime('%m-%d'), self.title)
     class Meta:
@@ -116,13 +111,6 @@ class Holiday(models.Model):
         return u'%s: %s' % (self.date.strftime('%m-%d'), self.name)
     class Meta:
         ordering = ('date',)
-
-class Topic(models.Model):
-    name = models.CharField(max_length=80)
-    def __unicode__(self):
-        return self.name
-    class Meta:
-        ordering = ('name',)
 
 class Assignment(models.Model):
     course = models.ForeignKey('Course', related_name='assignments')
