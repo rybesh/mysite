@@ -16,6 +16,12 @@ from StringIO import StringIO
 import datetime
 import csv
 
+def index(request):
+    o = {}
+    o['courses'] = Course.objects.all()
+    return render_to_response('courses.html', o,
+                              context_instance=RequestContext(request))
+
 def info(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(

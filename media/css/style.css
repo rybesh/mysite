@@ -31,7 +31,7 @@ body {
 
 html { overflow-y: scroll; }
 
-a:hover, a:active { outline: none; }
+a:hover, a:active, a.active { outline: none; }
 
 ol { list-style-type: decimal; }
 
@@ -84,7 +84,7 @@ nav a {
     padding: 4px 0px 4px 20px;
 }
 
-nav a:hover { 
+nav a:hover, nav a.active { 
     color: #fdf6e3 !important;
     background: transparent; 
 }
@@ -95,7 +95,7 @@ nav h1 a {
     padding-right: 20px;
 }
 
-nav h1 a:hover {
+nav h1 a:hover, nav h1 a.active {
     color: white !important;
     background-color: #d33682;
     text-shadow: 1px 1px 6px #fff;
@@ -171,6 +171,10 @@ img.representative {
     visibility: hidden;
 }
 
+.bio.group {
+    margin-top: 40px;
+}
+
 section {
     margin-top: 40px;
 }
@@ -215,12 +219,20 @@ ul.index-list {
     margin-left: 180px;
 }
 
+ul.courses.index-list {
+    margin-left: 60px;
+}
+
 ul.inline {
     display: inline;
 }
 
 li {
     margin-bottom: 40px;
+}
+
+li.course {
+    margin-bottom: 10px;
 }
 
 li:last-child {

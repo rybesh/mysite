@@ -28,7 +28,6 @@ class Course(models.Model):
     )        
     SEMESTER_CHOICES = (
         ('sp', 'Spring'),
-        ('su', 'Summer'),
         ('fa', 'Fall'),
     )
     department = models.ForeignKey('Department', related_name='courses')
@@ -42,6 +41,7 @@ class Course(models.Model):
     times = models.CharField(max_length=64)
     location = models.CharField(max_length=32)
     description = models.TextField()
+    blurb = models.TextField(blank=True)
     is_archived = models.BooleanField(default=False)
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
@@ -77,6 +77,7 @@ class Course(models.Model):
             self.get_semester_display(), self.get_year_display())
     class Meta:
         unique_together = ('slug', 'semester', 'year')
+        ordering = ('-year', 'semester')
 
 class Meeting(models.Model):
     course = models.ForeignKey('Course', related_name='meetings')

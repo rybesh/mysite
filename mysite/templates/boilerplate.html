@@ -9,16 +9,18 @@
   <meta name="description" content="{% block description %}{% endblock %}"/>
   <meta name="author" content="Ryan Shaw"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/media/css/style.css?v=2"/>{% block links %}{% endblock %}
+  <link rel="stylesheet" href="/media/css/style.css?v=3"/>{% block links %}{% endblock %}
   <script src="/media/js/libs/modernizr-1.7.min.js"></script>
 </head>
 <body>
   <header>
+    {% load nav %}
     <nav>
       <ul>
-        <li><h1><a href="/">Ryan Shaw</a></h1></li>
-        <li><a href="/reading/">reading</a></li>
-        <li><a href="/dissertation/">dissertation</a></li>
+        <li><h1>{% navlink request "/" "Ryan Shaw" %}</h1></li>
+        <li>{% navlink request "/teaching/" "teaching" %}</li>
+        <li>{% navlink request "/reading/" "reading" %}</li>
+        <li>{% navlink request "/dissertation/" "dissertation" %}</li>
       </ul>
     </nav>
   </header>

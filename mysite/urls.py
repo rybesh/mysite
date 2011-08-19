@@ -27,7 +27,7 @@ urlpatterns = patterns('',
 
     (r'^reading/', include('mysite.reading.urls')),
     (r'^talking/', include('mysite.talking.urls')),
-    (r'^courses/', include('mysite.courses.urls')),
+    (r'^teaching/', include('mysite.courses.urls')),
 
     url(r'^comments/post/$', 'mysite.comments.views.post_comment', 
         name='comments_post_comment_view'),

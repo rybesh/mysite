@@ -15,6 +15,8 @@ course_patterns = patterns('',
         views.dashboard, name='course_dashboard_view'),
 )
 urlpatterns = patterns('',
+    url(r'^$', 
+        views.index, name='courses_index_view'),                   
     url(r'^(?P<slug>[a-z]+-\d+)/blog/$', 
         views.blog, name='course_blog_view'),
     url(r'^(?P<slug>[a-z]+-\d+)/blog/feed/all/$', 
