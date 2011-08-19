@@ -123,6 +123,9 @@ p + p {
 a, a:active, a:visited { color: #d33682; }
 a:hover { background-color: #eee8d5; }
 
+h3 a, h3 a:active, h3 a:visited { color: #073642; text-decoration: none; }
+h3 a:hover { color: #d33682; }
+
 #main {
     background: #fdf6e3;
     padding: 32px 50px 40px;
@@ -232,7 +235,7 @@ li {
 }
 
 li.course {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 li:last-child {

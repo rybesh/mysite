@@ -18,7 +18,7 @@ import csv
 
 def index(request):
     o = {}
-    o['courses'] = Course.objects.all()
+    o['courses'] = Course.objects.order_by('title', '-year', 'semester')
     return render_to_response('courses.html', o,
                               context_instance=RequestContext(request))
 

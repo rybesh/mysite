@@ -12,17 +12,18 @@
     <h1>Courses Taught</h1>
   </header>
   <ul class="courses index-list">
-    {% for course in courses %}
+    {% regroup courses by title as course_list %}
+    {% for title in course_list %}
     <li class="course group">
-      <a class="block" href="{{ course.get_absolute_url }}">
-      <hgroup>
-        <h2>{{ course.title }}</h2>
-        <h3>{{ course.get_semester_display }} {{ course.year }}</h3>
-      </hgroup>
+      <h2>{{ title.grouper }}</h2>
       <div class="sweet-justice">
-        {{ course.blurb|typogrify }}
+        {{ title.list.0.blurb|typogrify }}
       </div>
-      </a>
+      {% for course in title.list %}
+      <h3><a href="{{ course.get_absolute_url }}">
+        {{ course.get_semester_display }} {{ course.year }}
+      </a></h3>
+      {% endfor %}
     </li>
     {% endfor %}
   </ul>
