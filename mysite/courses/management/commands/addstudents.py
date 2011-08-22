@@ -18,26 +18,29 @@ class Command(BaseCommand):
             try:
                 last_name, first_name = row['Name'].split(',')
                 email = row['Email']
+                username = email.split('@')[0]
+                try:
+                    student = User.objects.get(username=username)
+                    if not (student.last_name == last_name and
+                            student.first_name == first_name):
+                        raise CommandError(
+                            'User with username <%s>'
+                            + ' already exists, but the names do not match.')
+                    student.email = email
+                    existing_count += 1
+                except User.DoesNotExist:
+                    student = User.objects.create_user(
+                        username, email, User.objects.make_random_password())
+                    student.last_name = last_name
+                    student.first_name = first_name
+                    new_count += 1
+                student.save()
+                students.append(student)
             except KeyError as e:
                 raise CommandError('%s is missing a %s value.' % (args[0], e))
-            try:
-                student = User.objects.get(email=email)
-                if not (student.last_name == last_name and
-                        student.first_name == first_name):
-                    raise CommandError('User with email <%s> already exists, but the names do not match.')
-                existing_count += 1
-            except User.DoesNotExist:
-                username = email.split('@')[0]
-                student = User.objects.create_user(
-                    username, email, User.objects.make_random_password())
-                student.last_name = last_name
-                student.first_name = first_name
-                student.save()
-                new_count += 1
-            students.append(student)
         self.stdout.write('%s new students and %s existing students.\n' % (new_count, existing_count))
         self.stdout.write('To which course will these students be added?\n')
-        for course in Course.objects.all():
+        for course in Course.objects.filter(is_archived=False):
             self.stdout.write('(%s) %s\n' % (course.id, course))
         while True:
             course_id = raw_input('Course ID: ')
