@@ -185,12 +185,9 @@ class Linky:
         return ' <a href="%s">%s</a>.' % (self.url, match.group(1))
 
 class Reading(models.Model):
-    zotero_id = models.CharField(max_length=16, blank=True)
+    zotero_id = models.CharField(max_length=16)
     citation_text = models.CharField(max_length=128, blank=True, editable=False)
     citation_html = models.TextField(blank=True, editable=False)
-    bibtex = models.TextField(blank=True)
-    citekey = models.CharField(
-        max_length=16, editable=False, unique=True, blank=True)
     description = models.TextField(blank=True)
     file = models.FileField(upload_to='courses/readings', blank=True)
     url = models.URLField(blank=True, verify_exists=False)
@@ -200,12 +197,6 @@ class Reading(models.Model):
         if self.zotero_id:
             self.citation_text = bibutils.format_zotero_as_text(self.zotero_id)
             self.citation_html = bibutils.format_zotero_as_html(self.zotero_id)
-        if self.bibtex:
-            citekeys = bibutils.citekeys(self.bibtex)
-            if not len(citekeys) == 1:
-                raise Exception(
-                    'Must have exactly 1 citekey, got %s' % citekeys)
-            self.citekey = citekeys[0]
         super(Reading, self).save(*args, **kwargs)
     def get_url(self):
         if self.file:
@@ -219,13 +210,11 @@ class Reading(models.Model):
     def as_html(self):
         linky = Linky(
             self.get_url(), self.access_via_proxy, self.ignore_citation_url)
-        return linky.linkify(
-            self.citation_html or bibutils.format_bibtex_as_html(self.bibtex))
+        return linky.linkify(self.citation_html)
     def __unicode__(self):
-        return (self.citation_text or
-                bibutils.format_bibtex_as_text(self.bibtex))
+        return self.citation_text
     class Meta:
-        ordering = ('citation_text','citekey')
+        ordering = ('citation_text',)
 
 class ReadingAssignment(models.Model):
     meeting = models.ForeignKey('Meeting', related_name='reading_assignments')

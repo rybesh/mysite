@@ -3,13 +3,8 @@ from django.contrib import admin
 from django.forms import ModelForm, ChoiceField
 from mysite.shared import bibutils
 
-def load_zotero_library():
-    library = bibutils.load_zotero_library()
-    library.insert(0, ('',''))
-    return library
-
 class ReadingForm(ModelForm):
-    zotero_id = ChoiceField(choices=load_zotero_library())
+    zotero_id = ChoiceField(choices=bibutils.load_zotero_library())
     class Meta:
         model = Reading
 
