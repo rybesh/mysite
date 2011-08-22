@@ -38,11 +38,8 @@ class CourseAdmin(admin.ModelAdmin):
         return field
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('course_number', '__unicode__')
+    list_display = ('course', '__unicode__')
     inlines = (ReadingAssignmentInline,)
-    def course_number(self, meeting):
-        return meeting.course.number
-    course_number.admin_order_field = 'course'
     def queryset(self, request):
         return super(MeetingAdmin, self).queryset(request)\
             .filter(course__is_archived=False)
