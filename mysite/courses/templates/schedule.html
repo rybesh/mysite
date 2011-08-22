@@ -62,19 +62,6 @@
     <li class="reading">
       <p>
         {{ assigned.reading.as_html }}
-        {% if assigned.reading.url %}
-        <a href="{{ assigned.reading.get_url }}">Link</a>
-        {% endif %}
-        {% if assigned.reading.file %}
-          {% if user.is_authenticated %}
-            {% if user_is_authorized %}
-              <a href="{{ assigned.reading.file.url }}">PDF</a>
-            {% endif %}
-          {% else %}
-          <a href="{% url django.contrib.auth.views.login %}?next={{ assigned.reading.file.url }}">
-Log in</a> to download this reading.
-          {% endif %}
-        {% endif %}
       </p>
       <div class="description">{{ assigned.reading.description|markdown }}</div>
       {% if user.is_authenticated %}

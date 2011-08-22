@@ -64,7 +64,6 @@ class AssignmentAdmin(admin.ModelAdmin):
 
 class ReadingAdmin(admin.ModelAdmin):
     form = ReadingForm
-    ordering = ('citekey',)
     readonly_fields = ('citation_text', 'citation_html')
 
 class SubmissionAdmin(admin.ModelAdmin):

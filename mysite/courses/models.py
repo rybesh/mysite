@@ -156,6 +156,34 @@ class Submission(models.Model):
 
 PROXY = 'http://libproxy.lib.unc.edu/login?url='
 
+class Linky:
+    def __init__(self, stored_url, access_via_proxy, ignore_citation_url):
+        self.url = ''
+        self.stored_url = stored_url
+        self.access_via_proxy = access_via_proxy
+        self.ignore_citation_url = ignore_citation_url
+    def linkify(self, html):
+        html = re.sub(r' (https?://.+)\.', self.repl, html, 1)
+        if self.stored_url and not self.url == self.stored_url:
+            if self.access_via_proxy:
+                anchor = self.stored_url[len(PROXY):]
+            elif self.stored_url.startswith('/'):
+                anchor = 'PDF'
+            else:
+                anchor = self.stored_url
+            html = re.sub(
+                r'</div>\n</div>', 
+                r' <a href="%s">%s</a>.</div>\n</div>' % (
+                    self.stored_url, anchor), html, 1)
+        return mark_safe(html)
+    def repl(self, match):
+        if self.ignore_citation_url:
+            return ''
+        self.url = match.group(1)
+        if self.access_via_proxy:
+            self.url = PROXY + self.url
+        return ' <a href="%s">%s</a>.' % (self.url, match.group(1))
+
 class Reading(models.Model):
     zotero_id = models.CharField(max_length=16, blank=True)
     citation_text = models.CharField(max_length=128, blank=True, editable=False)
@@ -167,6 +195,7 @@ class Reading(models.Model):
     file = models.FileField(upload_to='courses/readings', blank=True)
     url = models.URLField(blank=True, verify_exists=False)
     access_via_proxy = models.BooleanField(default=False)
+    ignore_citation_url = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         if self.zotero_id:
             self.citation_text = bibutils.format_zotero_as_text(self.zotero_id)
@@ -181,23 +210,22 @@ class Reading(models.Model):
     def get_url(self):
         if self.file:
             return self.file.url
-        elif self.access_via_proxy:
-            return PROXY + self.url
-        else:
-            return self.url
+        if self.url:
+            if self.access_via_proxy:
+                return PROXY + self.url
+            else:
+                return self.url
+        return ''
     def as_html(self):
-        html = (self.citation_html or 
-                bibutils.format_bibtex_as_html(self.bibtex))
-        if self.access_via_proxy:
-            html = re.sub(r'(https?://.+)\.', 
-                          r'<a href="http://libproxy.lib.unc.edu/login?url=\1">'
-                          + r'\1</a>.', html)
-        return mark_safe(html)
+        linky = Linky(
+            self.get_url(), self.access_via_proxy, self.ignore_citation_url)
+        return linky.linkify(
+            self.citation_html or bibutils.format_bibtex_as_html(self.bibtex))
     def __unicode__(self):
         return (self.citation_text or
                 bibutils.format_bibtex_as_text(self.bibtex))
     class Meta:
-        ordering = ('citekey',)
+        ordering = ('citation_text','citekey')
 
 class ReadingAssignment(models.Model):
     meeting = models.ForeignKey('Meeting', related_name='reading_assignments')
