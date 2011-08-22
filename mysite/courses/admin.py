@@ -1,5 +1,17 @@
 from models import *
 from django.contrib import admin
+from django.forms import ModelForm, ChoiceField
+from mysite.shared import bibutils
+
+def load_zotero_library():
+    library = bibutils.load_zotero_library()
+    library.insert(0, ('',''))
+    return library
+
+class ReadingForm(ModelForm):
+    zotero_id = ChoiceField(choices=load_zotero_library())
+    class Meta:
+        model = Reading
 
 class HolidayInline(admin.StackedInline):
     model = Holiday
@@ -10,9 +22,15 @@ class ReadingAssignmentInline(admin.StackedInline):
     extra = 0
 
 class CourseAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__', 'is_current')
     inlines = (HolidayInline,)
     prepopulated_fields = { 'slug': ('number',) }
     filter_horizontal = ('students',)
+    ordering = ('is_archived',)
+    def is_current(self, course):
+        return not course.is_archived
+    is_current.boolean = True
+    is_current.admin_order_field = 'is_archived'
     def get_user_label(self, user):
         return (user.get_full_name() or user.username)
     def formfield_for_manytomany(self, db_field, request, **kwargs):
@@ -25,7 +43,11 @@ class CourseAdmin(admin.ModelAdmin):
         return field
 
 class MeetingAdmin(admin.ModelAdmin):
+    list_display = ('course_number', '__unicode__')
     inlines = (ReadingAssignmentInline,)
+    def course_number(self, meeting):
+        return meeting.course.number
+    course_number.admin_order_field = 'course'
     def queryset(self, request):
         return super(MeetingAdmin, self).queryset(request)\
             .filter(course__is_archived=False)
@@ -41,7 +63,9 @@ class AssignmentAdmin(admin.ModelAdmin):
     ordering = ('-due_date',)
 
 class ReadingAdmin(admin.ModelAdmin):
+    form = ReadingForm
     ordering = ('citekey',)
+    readonly_fields = ('citation_text', 'citation_html')
 
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('assignment', 'submitter', 'grade')

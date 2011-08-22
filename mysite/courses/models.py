@@ -1,9 +1,11 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 from mysite.blog.models import Blog
 from mysite.shared import bibutils
 import datetime
+import re
 
 class Department(models.Model):
     name = models.CharField(max_length=80)
@@ -100,7 +102,7 @@ class Meeting(models.Model):
     def __unicode__(self):
         return u'%s: %s' % (self.date.strftime('%m-%d'), self.title)
     class Meta:
-        ordering = ('date',)
+        ordering = ('course','date')
 
 class Holiday(models.Model):
     course = models.ForeignKey('Course', related_name='holidays')
@@ -152,22 +154,48 @@ class Submission(models.Model):
     def __unicode__(self):
         return u'%s: %s' % (self.assignment, self.submitter.get_full_name())
 
+PROXY = 'http://libproxy.lib.unc.edu/login?url='
+
 class Reading(models.Model):
-    bibtex = models.TextField()
-    citekey = models.CharField(max_length=16, editable=False, unique=True)
+    zotero_id = models.CharField(max_length=16, blank=True)
+    citation_text = models.CharField(max_length=128, blank=True, editable=False)
+    citation_html = models.TextField(blank=True, editable=False)
+    bibtex = models.TextField(blank=True)
+    citekey = models.CharField(
+        max_length=16, editable=False, unique=True, blank=True)
     description = models.TextField(blank=True)
     file = models.FileField(upload_to='courses/readings', blank=True)
     url = models.URLField(blank=True, verify_exists=False)
+    access_via_proxy = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
-        citekeys = bibutils.citekeys(self.bibtex)
-        if not len(citekeys) == 1:
-            raise Exception('Must have exactly 1 citekey, got %s' % citekeys)
-        self.citekey = citekeys[0]
+        if self.zotero_id:
+            self.citation_text = bibutils.format_zotero_as_text(self.zotero_id)
+            self.citation_html = bibutils.format_zotero_as_html(self.zotero_id)
+        if self.bibtex:
+            citekeys = bibutils.citekeys(self.bibtex)
+            if not len(citekeys) == 1:
+                raise Exception(
+                    'Must have exactly 1 citekey, got %s' % citekeys)
+            self.citekey = citekeys[0]
         super(Reading, self).save(*args, **kwargs)
+    def get_url(self):
+        if self.file:
+            return self.file.url
+        elif self.access_via_proxy:
+            return PROXY + self.url
+        else:
+            return self.url
     def as_html(self):
-        return bibutils.format_as_html(self.bibtex)
+        html = (self.citation_html or 
+                bibutils.format_bibtex_as_html(self.bibtex))
+        if self.access_via_proxy:
+            html = re.sub(r'(https?://.+)\.', 
+                          r'<a href="http://libproxy.lib.unc.edu/login?url=\1">'
+                          + r'\1</a>.', html)
+        return mark_safe(html)
     def __unicode__(self):
-        return bibutils.format_as_text(self.bibtex)
+        return (self.citation_text or
+                bibutils.format_bibtex_as_text(self.bibtex))
     class Meta:
         ordering = ('citekey',)
 

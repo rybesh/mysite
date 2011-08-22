@@ -108,4 +108,6 @@ SHORTEN_MODELS = {
 #HAYSTACK_SEARCH_ENGINE = 'xapian'
 #HAYSTACK_XAPIAN_PATH = os.path.join(os.environ['CONFIG_FILES'], 'mysite.index')
 
+ZOTERO_GROUP_ID = '51755'
+
 from secrets import *

@@ -63,7 +63,7 @@
       <p>
         {{ assigned.reading.as_html }}
         {% if assigned.reading.url %}
-        <a href="{{ assigned.reading.url }}">Link</a>
+        <a href="{{ assigned.reading.get_url }}">Link</a>
         {% endif %}
         {% if assigned.reading.file %}
           {% if user.is_authenticated %}
