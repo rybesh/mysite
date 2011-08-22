@@ -236,6 +236,15 @@ li {
 
 li.course {
     margin-bottom: 20px;
+    max-width: 550px;
+}
+
+li.course h2 {
+    margin-bottom: 5px;
+}
+
+li.course h3 {
+    margin-top: 5px;
 }
 
 li:last-child {
