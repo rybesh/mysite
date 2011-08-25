@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load markdown typogrify %}
+
+{% block title %}: Thanks{% endblock %}
+
+{% block content %}
+{% filter typogrify %}
+<section id="thanks">
+<h3><span class="title">Thanks &amp; Acknowledgements</span></h3>
+{{ course.thanks|markdown }}
+</section>
+{% endfilter %}
+{% endblock %}

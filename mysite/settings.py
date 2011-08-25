@@ -13,6 +13,7 @@ ADMINS = (
 )
 
 DEFAULT_FROM_EMAIL = 'Ryan Shaw <ryanshaw@unc.edu>'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'ryan.b.shaw@gmail.com'
 EMAIL_PORT = 587

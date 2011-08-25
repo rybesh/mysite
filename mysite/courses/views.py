@@ -62,6 +62,13 @@ def guidelines(request, slug, year, semester):
     return render_to_response('guidelines.html', o,
                               context_instance=RequestContext(request))
 
+def thanks(request, slug, year, semester):
+    o = {}
+    o['course'] = get_object_or_404(
+        Course, slug=slug, year=year, semester=semester)
+    return render_to_response('thanks.html', o,
+                              context_instance=RequestContext(request))
+
 def assignments(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
@@ -172,7 +179,8 @@ def blog(request, slug, post_slug=None):
         posts = o['blog'].posts.filter(slug=post_slug, published=True)
         if len(posts) == 0:
             raise Http404
-        o['show_comment_form'] = True
+        if request.user.is_authenticated():
+            o['show_comment_form'] = True
         o['next'] = posts[0].get_absolute_url()
     elif 'mine' in request.GET:
         posts = o['blog'].posts.filter(author=request.user).order_by('-updated_at')
@@ -191,6 +199,8 @@ def blog(request, slug, post_slug=None):
                               context_instance=RequestContext(request))
 
 def median(pool):
+    if len(pool) == 0:
+        return None
     copy = sorted(pool)
     size = len(copy)
     if size % 2 == 1:
@@ -261,7 +271,8 @@ def dashboard(request, slug, year, semester):
         o['comment_count'] = setdefault(o['student'].username)['comment_count']
         o['comment_median'] = median([ v['comment_count'] for v in counts.values() ])
     o['assignments'] = []
-    for assignment in o['course'].assignments.filter(is_graded=True):
+    for assignment in o['course'].assignments.filter(
+        is_handed_out=True, is_graded=True):
         grades = {}
         comments = ''
         for submission in assignment.submissions.all():

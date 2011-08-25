@@ -18,22 +18,15 @@ class Command(BaseCommand):
             try:
                 last_name, first_name = row['Name'].split(',')
                 email = row['Email']
-                username = email.split('@')[0]
-                try:
-                    student = User.objects.get(username=username)
-                    if not (student.last_name == last_name and
-                            student.first_name == first_name):
-                        raise CommandError(
-                            'User with username <%s>'
-                            + ' already exists, but the names do not match.')
-                    student.email = email
-                    existing_count += 1
-                except User.DoesNotExist:
-                    student = User.objects.create_user(
-                        username, email, User.objects.make_random_password())
-                    student.last_name = last_name
-                    student.first_name = first_name
+                username = first_name[0].lower() + last_name.lower()
+                student, created = User.objects.get_or_create(
+                    first_name=first_name, last_name=last_name,
+                    defaults={ 'username': username })
+                if created:
                     new_count += 1
+                else:
+                    existing_count += 1
+                student.email = email
                 student.save()
                 students.append(student)
             except KeyError as e:

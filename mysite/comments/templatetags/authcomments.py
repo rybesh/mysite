@@ -9,7 +9,7 @@ class RenderAuthenticatedCommentFormNode(RenderCommentFormNode):
         ctype, object_pk = self.get_target_ctype_pk(context)
         if object_pk:
             initial = None
-            if 'user' in context:
+            if 'user' in context and context['user'].is_authenticated():
                 initial = { 'name': (context['user'].get_full_name() or 
                                      context['user'].username),
                             'email': context['user'].email }

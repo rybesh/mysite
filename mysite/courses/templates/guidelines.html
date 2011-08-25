@@ -8,53 +8,15 @@
 {% filter typogrify %}
 <section id="evaluation">
 <h3><span class="title">Evaluation &amp; Grading</span></h3>
-<p>Course grades will be determined as follows:</p>
-<ul>
-  <li>20 points: Participation (see below)</li>
-  <li>55 points: Assignments</li>
-  <li>25 points: Final exam</li>
-</ul>
-<p>Points will be converted to letter grades as follows:</p>
-<p>100-95: H, 94-90: P+, 89-85: P, 84-80: P-, 79-70: L, &lt; 69: F</p>
+{{ course.evaluation|markdown }}
 </section>
 <section id="participation">
 <h3><span class="title">Participation</span></h3>
-<p>You are expected to <strong>attend class</strong> and
-<strong>actively participate in (but not dominate) class
-discussions</strong>. Beyond that baseline, there are are two other
-ways you are required to participate:</p>
-<ol>
-  <li><strong>Leading discussion of readings.</strong> During the
-  semester each student in the class must volunteer to lead discussion
-  of at least one assigned reading. When it is your turn to lead
-  discussion, please come up with 2-3 good discussion questions
-  pertaining to the reading, and post them on the class Web site
-  (instructions on how to do this coming soon). You must post your
-  questions prior to the beginning of class. In class, you will be
-  expected to kick off the discussion by asking your questions and
-  opening the floor for discussion.</li>
-  <li><strong>Blogging and commenting.</strong> We will have a class
-  blog, and you are expected to post and comment there throughout the
-  semester. Consider blogging an opportunity to think out loud and
-  share ideas and insights you've had with your classmates. Blogging
-  will also help you to see the concepts we’re introducing in this
-  class out in the real world, helping you better understand the
-  material. Great topics for great blog posts include news stories
-  relating to issues we've discussed in class; questions or comments
-  relating to lectures; a story about something related to information
-  organization that happened to you; or reflections on things you’ve
-  learned.  I want this to be an open and fun place for discussion
-  that will help enrich your conceptual understanding of the
-  course.</li>
-</ol>
+{{ course.participation|markdown }}
 </section>
 <section id="honor">
 <h3><span class="title">Honor Code</span></h3>
-<p>Collaboration, discussion, and seeking assistance from other
-students is encouraged in this class and is not inconsistent with the
-<a href="http://honor.unc.edu/">Honor Code</a>. In the case of written
-work, all words drawn from others must be attributed
-appropriately.</p>
+<p>You are expected to know and respect <a href="http://honor.unc.edu/">UNC Honor Code</a>. Collaboration, discussion, and seeking assistance from other students is encouraged in this class and is not inconsistent with the Honor Code. In the case of written work, all words drawn from others must be <a href="http://www.lib.unc.edu/instruct/tutorials.html">attributed appropriately</a>.</p>
 </section>
 {% endfilter %}
 {% endblock %}

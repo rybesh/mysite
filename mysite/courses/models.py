@@ -42,9 +42,14 @@ class Course(models.Model):
     year = models.IntegerField(choices=YEAR_CHOICES)
     times = models.CharField(max_length=64)
     location = models.CharField(max_length=32)
+    ereserves_id = models.CharField(max_length=8, blank=True)
     description = models.TextField()
     blurb = models.TextField(blank=True)
+    evaluation = models.TextField(blank=True)
+    participation = models.TextField(blank=True)
+    thanks = models.TextField(blank=True)
     is_archived = models.BooleanField(default=False)
+    has_blog = models.BooleanField(default=False)
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     def is_authorized(self, user):
@@ -97,6 +102,11 @@ class Meeting(models.Model):
     slides = models.FileField(upload_to=upload_to, blank=True, null=True)
     def has_readings(self):
         return len(self.readings.all()) > 0
+    def has_ereserves(self):
+        for reading in self.readings.all():
+            if reading.access_via_ereserves:
+                return True
+        return False
     def reading_list(self):
         return self.readings.all().order_by('readingassignment__order')
     def __unicode__(self):
@@ -134,7 +144,8 @@ class Assignment(models.Model):
         return (reverse('course_submit_assignment_view', kwargs={
                     'assignment_id': self.id }))
     def __unicode__(self):
-        return u'%s: %s' % (self.due_date.strftime('%m-%d'), self.title)
+        return u'%s %s: %s' % (
+            self.course.number, self.due_date.strftime('%m-%d'), self.title)
     class Meta:
         ordering = ('due_date',)
 
@@ -192,6 +203,7 @@ class Reading(models.Model):
     file = models.FileField(upload_to='courses/readings', blank=True)
     url = models.URLField(blank=True, verify_exists=False)
     access_via_proxy = models.BooleanField(default=False)
+    access_via_ereserves = models.BooleanField(default=False)
     ignore_citation_url = models.BooleanField(default=False)
     def save(self, *args, **kwargs):
         if self.zotero_id:
