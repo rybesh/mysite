@@ -252,8 +252,8 @@ def dashboard(request, slug, year, semester):
             setdefault(leader)['discussion_count'] += 1
     o['discussion_count'] = setdefault(o['student'].username)['discussion_count']
     o['discussion_median'] = median([ v['discussion_count'] for v in counts.values() ])
-    blog = Blog.objects.get(slug=slug)
-    if blog:
+    try:
+        blog = Blog.objects.get(slug=slug)
         o['blog_metrics'] = True
         date_range = o['course'].get_date_range()
         for poster in blog.posts\
@@ -270,6 +270,8 @@ def dashboard(request, slug, year, semester):
         o['post_median'] = median([ v['post_count'] for v in counts.values() ])
         o['comment_count'] = setdefault(o['student'].username)['comment_count']
         o['comment_median'] = median([ v['comment_count'] for v in counts.values() ])
+    except Blog.DoesNotExist:
+        pass
     o['assignments'] = []
     for assignment in o['course'].assignments.filter(
         is_handed_out=True, is_graded=True):
