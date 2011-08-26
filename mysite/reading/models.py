@@ -1,9 +1,12 @@
 from django.db import models
 from mysite.shared import bibutils
+import json
 
 class Text(models.Model):
     slug = models.SlugField(max_length=80, unique=True)
-    bibtex = models.TextField()
+    zotero_id = models.CharField(max_length=16)
+    zotero_json = models.TextField(blank=True, editable=False)
+    citation_text = models.CharField(max_length=128, blank=True, editable=False)
     markdown = models.TextField()
     synopsis = models.TextField()
     image = models.ImageField(
@@ -17,38 +20,45 @@ class Text(models.Model):
     status = models.CharField(max_length=16)
     citation_key = models.CharField(max_length=32, unique=True, db_index=True)
     related_texts = models.ManyToManyField('self')
+    def save(self, *args, **kwargs):
+        if self.zotero_id:
+            zotero_item = bibutils.load_zotero_item(self.zotero_id)
+            self.zotero_json = json.dumps(zotero_item)
+            self.citation_text = bibutils.zotero_item_to_text(zotero_item)
+        super(Text, self).save(*args, **kwargs)
     def bibvalue(self, key):
-        entry = bibutils.parse(self.bibtex).entries[self.citation_key]
-        if key in ['author']:
-            value = entry.persons.get(key, None)
+        if self.zotero_id:
+            zotero_item = json.loads(self.zotero_json)
+            return zotero_item.get(key, '')
         else:
-            value = entry.fields.get(key, None)
-            if value is not None:
-                value = value.strip('{ }')
-        return value
+            return ''
     def title(self):
         title = self.bibvalue('title')
-        shorttitle = self.bibvalue('shorttitle')
+        shorttitle = self.bibvalue('shortTitle')
         if shorttitle is not None:
             if title and (': ' in title):
                 title = title.split(': ', 1)[0]
         return title
     def subtitle(self):
         subtitle = ''
-        shorttitle = self.bibvalue('shorttitle')
+        shorttitle = self.bibvalue('shortTitle')
         if shorttitle is not None:
             title = self.bibvalue('title')
             if title and (': ' in title):
                 subtitle = title.split(': ', 1)[1]
         return subtitle
     def authors(self):
-        return self.bibvalue('author')
+        authors = []
+        for creator in self.bibvalue('creators'):
+            if creator['creatorType'] == 'author':
+                authors.append(creator)
+        return authors
     def year(self):
-        return self.bibvalue('year')
+        return self.bibvalue('date')
     def url(self):
         return self.bibvalue('url')
     def __unicode__(self):
-        return self.title()
+        return self.citation_text
     @models.permalink
     def get_absolute_url(self):
         return ('reading_text_view', (), { 

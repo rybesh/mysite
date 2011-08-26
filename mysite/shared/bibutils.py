@@ -14,7 +14,7 @@ def format_zotero_as_html(zotero_item_id):
 def zotero_item_to_text(item):
     return '%s (%s)' % (item['title'],
                         ', '.join([ '%s %s' % (c['firstName'], c['lastName']) 
-                                    for c in item['creators'] ]))
+                                    for c in item.get('creators', []) ]))
 
 
 def format_zotero_as_text(zotero_item_id):
@@ -32,6 +32,9 @@ def load_zotero_atom(uri):
     tree.parse(urlopen(uri))
     library = []
     for entry in tree.findall('{http://www.w3.org/2005/Atom}entry'):
+        item_type = entry.find('{http://zotero.org/ns/api}itemType').text
+        if item_type == 'attachment':
+            continue
         key = entry.find('{http://zotero.org/ns/api}key').text
         content = entry.find('{http://www.w3.org/2005/Atom}content').text
         library.append((key, zotero_item_to_text(json.loads(content))))

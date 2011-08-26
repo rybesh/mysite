@@ -5,8 +5,8 @@ from urlparse import urlparse
 
 def text_to_obj(text):
     text.domain = urlparse(text.url()).netloc
-    text.authorlist = [ '%s %s' % (''.join(person.first()),
-                                   ''.join(person.last()))
+    text.authorlist = [ '%s %s' % (person['firstName'],
+                                   person['lastName'])
                         for person in text.authors() ]
     return text
 
