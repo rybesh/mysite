@@ -128,7 +128,7 @@ class Holiday(models.Model):
 class Assignment(models.Model):
     course = models.ForeignKey('Course', related_name='assignments')
     slug = models.SlugField()
-    due_date = models.DateField()
+    due_date = models.DateField(blank=True)
     title = models.CharField(max_length=80)
     description = models.TextField()
     points = models.IntegerField(default=0)
@@ -144,8 +144,11 @@ class Assignment(models.Model):
         return (reverse('course_submit_assignment_view', kwargs={
                     'assignment_id': self.id }))
     def __unicode__(self):
-        return u'%s %s: %s' % (
-            self.course.number, self.due_date.strftime('%m-%d'), self.title)
+        if self.due_date:
+            return u'%s %s: %s' % (
+                self.course.number, self.due_date.strftime('%m-%d'), self.title)
+        else:
+            return u'%s: %s' % (self.course.number, self.title)
     class Meta:
         ordering = ('due_date',)
 
