@@ -38,17 +38,17 @@
 </h3>
 <div class="meeting{% if meeting.is_tentative %} tentative{% endif %}">
   {% filter typogrify %}
-  {% if meeting.assignment_due %}
+  {% for assignment in meeting.assignments_due %}
   <p class="assignment-due">
-    Assignment #{{  meeting.assignment_due.number }}
-    {% if meeting.assignment_due.is_handed_out %}
-    <a href="{{ meeting.assignment_due.get_absolute_url }}">
-      {{ meeting.assignment_due.title }}
+    Assignment #{{  assignment.number }}
+    {% if assignment.is_handed_out %}
+    <a href="{{ assignment.get_absolute_url }}">
+      {{ assignment.title }}
     </a>
     {% endif %}
     due
   </p>
-  {% endif %}
+  {% endfor %}
   <div class="description">{{ meeting.description|markdown }}</div>
   {% if user_is_authorized %}
   {% if meeting.slides %}

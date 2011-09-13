@@ -2,11 +2,11 @@
 
 {% load markdown typogrify %}
 
-{% block title %}: Discussion of {{ assigned.reading.citekey }}{% endblock %}
+{% block title %}: Discussion{% endblock %}
 
 {% block content %}
 {% filter typogrify %}
-<h3><span class="title">Discussion of: {{ assigned.reading.as_html }}</span></h3>
+<h3><span class="title">Discussion questions</span></h3>
 {% if assigned.discussion_questions_posted %}
 <div class="discussion">{{ assigned.discussion_questions|markdown }}</div>
 {% else %}

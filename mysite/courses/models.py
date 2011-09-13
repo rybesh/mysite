@@ -49,7 +49,9 @@ class Course(models.Model):
     participation = models.TextField(blank=True)
     thanks = models.TextField(blank=True)
     is_archived = models.BooleanField(default=False)
-    has_blog = models.BooleanField(default=False)
+    blog_slug = models.CharField(max_length=20, blank=True)
+    def has_blog(self):
+        return (len(self.blog_slug) > 0)
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     def is_authorized(self, user):

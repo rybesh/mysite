@@ -7,20 +7,17 @@
 {% block content %}
 {% filter typogrify %}
 {% for assignment in course.assignments.all %}
-{% if assignment.due_date %}
-<h3 id="a{{ forloop.counter }}"><span class="title">#{{ forloop.counter }}: {{ assignment.title }}</span></h3>
-<div>
-<p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
-{% else %}
 <h3 id="{{ assignment.slug }}"><span class="title">{{ assignment.title }}</span></h3>
 <div>
+{% if assignment.due_date %}
+<p class="assignment-due">Due {{ assignment.due_date|date:"F j" }}.</p>
 {% endif %}
 {% if assignment.is_handed_out %}
 <div class="description">
   {{ assignment.description|markdown:"unsafe" }}
 </div>
   {% if assignment.is_submitted_online %}
-  <p id="submit-a{{ forloop.counter }}"><a href="{{ assignment.get_submit_url }}">Submit assignment #{{ forloop.counter }}.</a></p>
+  <p id="submit-{{ assignment.slug }}"><a href="{{ assignment.get_submit_url }}">Submit this assignment.</a></p>
   {% endif %}
 {% else %}
 <p>To be handed out.</p>

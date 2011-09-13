@@ -22,6 +22,42 @@
     {% endif %}
   </ul>
 </nav>
+{% if blog.hashtag %}
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: '#{{ blog.hashtag }}',
+  interval: 30000,
+  title: '',
+  subject: '',
+  width: 250,
+  height: 500,
+  theme: {
+    shell: {
+      background: '#ffffff',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#ef4300'
+    }
+  },
+  features: {
+    scrollbar: true,
+    loop: false,
+    live: true,
+    hashtags: true,
+    timestamp: false,
+    avatars: true,
+    toptweets: false,
+    behavior: 'all'
+  }
+}).render().start();
+</script>
+{% endif %}
 {% filter typogrify %}
 {% for post in page.object_list %}
 <h3>

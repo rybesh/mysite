@@ -24,7 +24,7 @@
           <li><a href="{{ course_url }}thanks/">Thanks.</a></li>
           {% endwith %}
           {% if course.has_blog %}
-          <li><a href="/courses/{{ course.slug }}/blog/">Blog.</a></li>
+          <li><a href="/courses/{{ course.blog_slug }}/blog/">Blog.</a></li>
           {% endif %}
           {% if user.is_authenticated %}
           <li><a href="{{ course.get_absolute_url }}dashboard/">Dashboard.</a></li>

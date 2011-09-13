@@ -92,6 +92,7 @@ form div { margin: 2px 0 0 2px; }
 .discussion li p { margin-top: 8px; }
 .comments { margin-left: 24px; }
 #pagination { margin-top: 12px; }
+.twtr-widget { float: right; margin-right: -280px; }
 
 /* Tables */
 table { border-collapse: collapse; }

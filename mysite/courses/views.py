@@ -36,12 +36,15 @@ def schedule(request, slug, year, semester):
     o['meetings'] = list(o['course'].meetings.all())
     o['holidays'] = list(o['course'].holidays.all())
     assignments = {}
-    for i, assignment in enumerate(o['course'].assignments.all()):
+    for i, assignment in enumerate(
+        o['course'].assignments.filter(due_date__isnull=False)):
         assignment.number = (i + 1)
-        assignments[assignment.due_date] = assignment
+        assignments_due = assignments.get(assignment.due_date, [])
+        assignments_due.append(assignment)
+        assignments[assignment.due_date] = assignments_due
     o['in_flux'] = False
     for meeting in o['meetings']:
-        meeting.assignment_due = assignments.get(meeting.date, None)
+        meeting.assignments_due = assignments.get(meeting.date, [])
         if meeting.is_tentative: o['in_flux'] = True
     
     o['schedule'] = o['meetings'] + o['holidays']
@@ -164,7 +167,7 @@ def submit_assignment(request, assignment_id):
                               context_instance=RequestContext(request))
 
 def get_current_course(slug):
-    courses = list(Course.objects.filter(slug=slug).order_by('id'))
+    courses = list(Course.objects.filter(blog_slug=slug).order_by('id'))
     if len(courses) == 0:
         raise Course.DoesNotExist
     return courses[-1]
