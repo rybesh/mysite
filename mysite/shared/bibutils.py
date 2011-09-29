@@ -12,10 +12,14 @@ def format_zotero_as_html(zotero_item_id):
             '<?xml version="1.0"?>', ''))
 
 def zotero_item_to_text(item):
+    def name(creator):
+        if 'name' in creator: 
+            return creator['name']
+        return '%s %s' % (creator.get('firstName', ''),
+                          creator.get('lastName', ''))
     return '%s (%s)' % (item['title'],
-                        ', '.join([ '%s %s' % (c['firstName'], c['lastName']) 
+                        ', '.join([ name(c) 
                                     for c in item.get('creators', []) ]))
-
 
 def format_zotero_as_text(zotero_item_id):
     return zotero_item_to_text(load_zotero_item(zotero_item_id))
