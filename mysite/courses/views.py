@@ -296,7 +296,9 @@ def dashboard(request, slug, year, semester):
 
 class BlogPostForm(forms.Form):
     title = forms.CharField(max_length=80)
-    slug = forms.CharField(max_length=50)
+    slug = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={'readonly': True}))
     content = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 20, 'cols':80}))
     display_name = forms.CharField(required=False, max_length=32)

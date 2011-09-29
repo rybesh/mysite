@@ -20,7 +20,7 @@
 <div>{{ form.title.errors }} {% if post_published %}You cannot edit the title of a published post.{% endif %}</div>
 <h3><span class="title">Slug</span></h3>
 <p>{{ form.slug }}</p>
-<div>{{ form.slug.errors }} Used to generate the URL for your post. {% if post_published %}You cannot edit the slug of a published post.{% endif %}</div>
+<div>{{ form.slug.errors }} Used to generate the URL for your post.</div>
 <h3><span class="title">Content</span></h3>
 <p>{{ form.content }}</p>
 <div>{{ form.content.errors }} You may use <a target="_blank"
