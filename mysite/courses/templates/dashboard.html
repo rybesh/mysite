@@ -15,11 +15,13 @@
       <th>You</th>
       <th>Class median</th>
     </tr>
+<!--
     <tr>
       <td># of discussions led</td>
       <td >{{ discussion_count }}</td>
       <td>{{ discussion_median }}</td>
     </tr>
+-->
     <tr>
       <td># of blog posts</td>
       <td >{{ post_count }}</td>
@@ -46,7 +48,7 @@
       <td>{{ assignment.median }} / {{ assignment.points }}</td>
     </tr>
     <tr>
-      <td colspan="3">{{ assignment.comments|markdown|typogrify }}</td>
+      <td colspan="3">{{ assignment.comments|markdown:"unsafe"|typogrify }}</td>
     </tr>
 {% endfor %}
   </tbody>
