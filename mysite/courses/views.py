@@ -279,18 +279,23 @@ def dashboard(request, slug, year, semester):
     for assignment in o['course'].assignments.filter(
         is_handed_out=True, is_graded=True):
         grades = {}
-        comments = ''
+        data = { 'title': assignment.title }
         for submission in assignment.submissions.all():
             if submission.submitter.username in students:
-                grades[submission.submitter.username] = submission.grade
+                grades[submission.submitter.username] = submission.get_grade()
             if submission.submitter == o['student']:
-                comments = submission.comments
-        o['assignments'].append({
-                'title': assignment.title,
-                'points': assignment.points,
-                'grade': grades.get(o['student'].username, ''),
-                'median': median(grades.values()),
-                'comments': comments })
+                data['comments'] = submission.comments
+                if submission.zipfile:
+                    data['zipfile_url'] = submission.zipfile.url
+        if assignment.is_letter_graded:
+            data['grade'] = grades.get(o['student'].username, '')
+            data['median'] = 'N/A'
+        else:
+            data['grade'] = '%s / %s' % (
+                grades.get(o['student'].username, ''), assignment.points)
+            data['median'] = '%s / %s' % (
+                median(grades.values()), assignment.points)
+        o['assignments'].append(data)
     return render_to_response('dashboard.html', o,
                               context_instance=RequestContext(request))
 

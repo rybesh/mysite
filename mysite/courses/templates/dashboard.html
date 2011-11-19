@@ -38,17 +38,22 @@
   <tbody>
     <tr>
       <th>Assignments</th>
-      <th>You</th>
+      <th>Grade</th>
       <th>Class median</th>
     </tr>
 {% for assignment in assignments %}
     <tr>
       <td><em>{{ assignment.title }}</em></td>
-      <td>{{ assignment.grade }} / {{ assignment.points }}</td>
-      <td>{{ assignment.median }} / {{ assignment.points }}</td>
+      <td>{{ assignment.grade }}</td>
+      <td>{{ assignment.median }}</td>
     </tr>
     <tr>
-      <td colspan="3">{{ assignment.comments|markdown:"unsafe"|typogrify }}</td>
+      <td colspan="3">
+        {{ assignment.comments|markdown:"unsafe"|typogrify }}
+        {% if assignment.zipfile_url %}
+        <a href="{{ assignment.zipfile_url }}">Download files.</a>
+        {% endif %}
+      </td>
     </tr>
 {% endfor %}
   </tbody>

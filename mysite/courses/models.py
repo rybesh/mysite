@@ -136,7 +136,8 @@ class Assignment(models.Model):
     points = models.IntegerField(default=0)
     is_handed_out = models.BooleanField(default=False)
     is_submitted_online = models.BooleanField(default=False)
-    is_graded = models.BooleanField(default=False)
+    is_letter_graded = models.BooleanField(default=False)
+    is_graded = models.BooleanField('has been graded', default=False)
     def get_absolute_url(self):
         return (reverse('course_assignments_view', kwargs={ 
                     'slug': self.course.slug, 
@@ -152,7 +153,7 @@ class Assignment(models.Model):
         else:
             return u'%s: %s' % (self.course.number, self.title)
     class Meta:
-        ordering = ('due_date',)
+        ordering = ('due_date','slug')
 
 class Submission(models.Model):
     assignment = models.ForeignKey('Assignment', related_name='submissions')
@@ -166,7 +167,13 @@ class Submission(models.Model):
             o.submitter.username)
     zipfile = models.FileField(upload_to=upload_to)
     grade = models.IntegerField(default=0)
+    letter_grade = models.CharField(blank=True, max_length=2)
     comments = models.TextField(blank=True)
+    def get_grade(self):
+        if self.assignment.is_letter_graded:
+            return self.letter_grade
+        else:
+            return self.grade
     def __unicode__(self):
         return u'%s: %s' % (self.assignment, self.submitter.get_full_name())
 
