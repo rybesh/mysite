@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     (r'^$', direct_to_template, { 'template': 'bio.html' }),
     (r'^dissertation/$', direct_to_template, 
      { 'template': 'dissertation.html' }),
+    (r'^dhmeetsi/$', direct_to_template, 
+     { 'template': 'dhmeetsi.html' }),
 
     (r'^favicon.ico$', redirect_to, { 'url': '/media/img/favicon.ico' }),
 
