@@ -59,7 +59,7 @@ class ReadingAdmin(admin.ModelAdmin):
     readonly_fields = ('citation_text', 'citation_html')
 
 class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ('assignment', 'submitter', 'grade')
+    list_display = ('assignment', 'submitter', 'get_grade')
     list_filter = ('assignment',)
     def queryset(self, request):
         return super(SubmissionAdmin, self).queryset(request)\
