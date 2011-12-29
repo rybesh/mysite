@@ -40,6 +40,7 @@ class CourseAdmin(admin.ModelAdmin):
 class MeetingAdmin(admin.ModelAdmin):
     list_display = ('course', '__unicode__')
     inlines = (ReadingAssignmentInline,)
+    save_as = True
     def queryset(self, request):
         return super(MeetingAdmin, self).queryset(request)\
             .filter(course__is_archived=False)
