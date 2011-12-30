@@ -37,7 +37,7 @@ SITE_ID = 1
 USE_I18N = False
 USE_L10N = False
 
-MEDIA_ROOT = os.environ['CONFIG_WRITABLE_ROOT']
+MEDIA_ROOT = os.environ['CONFIG_FILES']
 MEDIA_URL = '/'
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 LOGIN_URL = '/login/'
@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'mysite.reading',
     'mysite.talking',
     #'mysite.writing',
+    'mysite.files',
 )
 
 COMMENTS_APP = 'mysite.comments'

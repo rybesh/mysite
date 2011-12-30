@@ -4,6 +4,7 @@ from django import forms
 from django.http import HttpResponse, HttpResponseForbidden, Http404
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
@@ -377,7 +378,3 @@ def edit_post(request, slug, post_slug=None):
     o['form'] = form
     return render_to_response('edit_post.html', o,
                               context_instance=RequestContext(request))
-        
-                
-            
-

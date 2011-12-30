@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     (r'^talking/', include('mysite.talking.urls')),
     (r'^teaching/', include('mysite.courses.urls')),
     (r'^courses/(?P<path>.*)$', redirect_to, {'url': '/teaching/%(path)s'}),
-     
+    (r'^files/', include('mysite.files.urls')),     
 
     url(r'^comments/post/$', 'mysite.comments.views.post_comment', 
         name='comments_post_comment_view'),
