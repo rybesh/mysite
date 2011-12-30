@@ -160,7 +160,7 @@ def submit_assignment(request, assignment_id):
     if submission:
         try:
             o['files'] = ZipFile(submission.zipfile).namelist()
-            o['zipfile_url'] = submission.zipfile.url
+            o['zipfile_url'] = '/files' + submission.zipfile.url
         except:
             pass
     o['form'] = form
@@ -287,7 +287,7 @@ def dashboard(request, slug, year, semester):
             if submission.submitter == o['student']:
                 data['comments'] = submission.comments
                 if submission.zipfile:
-                    data['zipfile_url'] = submission.zipfile.url
+                    data['zipfile_url'] = '/files' + submission.zipfile.url
         if assignment.is_letter_graded:
             data['grade'] = grades.get(o['student'].username, '')
             data['median'] = 'N/A'
