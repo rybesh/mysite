@@ -34,7 +34,7 @@ urlpatterns = patterns('',
 
     (r'^short/', include('shorturls.urls')),
 
-    (r'^reading/', include('mysite.reading.urls')),
+    #(r'^reading/', include('mysite.reading.urls')),
     (r'^talking/', include('mysite.talking.urls')),
     (r'^teaching/', include('mysite.courses.urls')),
     (r'^courses/(?P<path>.*)$', redirect_to, {'url': '/teaching/%(path)s'}),

@@ -91,7 +91,7 @@ INSTALLED_APPS = (
     'mysite.blog',
     'mysite.courses',
     'mysite.comments',
-    'mysite.reading',
+    #'mysite.reading',
     'mysite.talking',
     #'mysite.writing',
     'mysite.files',
