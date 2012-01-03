@@ -7,7 +7,9 @@
 <section id="instructor-info">
 <h3><span class="title">Who's Teaching It</span></h3>
 <p><a href="{{ course.instructor.url }}">{{ course.instructor.name }}</a></p>
-</p>
+{% if course.assistant %}
+<p><a href="{{ course.assistant.url }}">{{ course.assistant.name }}</a></p>
+{% endif %}
 </section>
 <section id="course-info">
 <h3><span class="title">When &amp; Where It Is</span></h3>

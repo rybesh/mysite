@@ -14,7 +14,7 @@ class Department(models.Model):
         return self.name
 
 class Instructor(models.Model):
-    name = models.CharField(max_length=9)
+    name = models.CharField(max_length=36)
     url = models.URLField()
     def __unicode__(self):
         return self.name
@@ -34,6 +34,8 @@ class Course(models.Model):
     )
     department = models.ForeignKey('Department', related_name='courses')
     instructor = models.ForeignKey('Instructor', related_name='courses')
+    assistant = models.ForeignKey(
+        'Instructor', related_name='courses_assisting', blank=True, null=True)
     students = models.ManyToManyField(User, related_name='courses')
     number = models.CharField(max_length=20)
     slug = models.CharField(max_length=20)
