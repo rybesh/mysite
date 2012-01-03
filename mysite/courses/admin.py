@@ -38,9 +38,10 @@ class CourseAdmin(admin.ModelAdmin):
         return field
 
 class MeetingAdmin(admin.ModelAdmin):
-    list_display = ('course', '__unicode__')
+    list_display = ('course', '__unicode__', 'is_tentative')
     inlines = (ReadingAssignmentInline,)
     save_as = True
+    actions = [ 'make_tentative', 'finalize' ]
     def queryset(self, request):
         return super(MeetingAdmin, self).queryset(request)\
             .filter(course__is_archived=False)
@@ -49,6 +50,20 @@ class MeetingAdmin(admin.ModelAdmin):
             kwargs['queryset'] = Course.objects.filter(is_archived=False)
         return super(MeetingAdmin, self)\
             .formfield_for_foreignkey(db_field, request, **kwargs)
+    def update_tentative(self, request, queryset, value):
+        rows_updated = queryset.update(is_tentative=value)
+        if rows_updated == 1:
+            message = '1 meeting was'
+        else:
+            message = '%s meetings were' % rows_updated
+        self.message_user(request, '%s successfully marked as %s.' 
+                          % (message, 'tentative' if value else 'finalized'))
+    def make_tentative(self, request, queryset):
+        self.update_tentative(request, queryset, True)
+    make_tentative.short_description = 'Mark selected meetings as tentative'
+    def finalize(self, request, queryset):
+        self.update_tentative(request, queryset, False)
+    finalize.short_description = 'Mark selected meetings as finalized'
 
 class AssignmentAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ('title',) }
