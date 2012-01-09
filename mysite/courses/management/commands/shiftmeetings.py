@@ -20,8 +20,8 @@ class Command(MyBaseCommand):
                 m.date = end_date
             else:
                 m.date = meetings[i+1].date
+            self.stdout.write('%s\n' % m)
         if self.input_ok('Shifting %s meetings' % len(meetings)):
             for m in meetings:
                 m.save()
-                self.stdout.write('%s\n' % m)
             self.stdout.write('Shifted %s meetings.\n' % len(meetings))
