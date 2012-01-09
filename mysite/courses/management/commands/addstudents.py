@@ -1,10 +1,11 @@
-from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from mysite.courses.models import Course
+from django.core.management.base import CommandError
 from django.db import transaction
+from mysite.courses.models import Course
+from utils import MyBaseCommand
 import csv
 
-class Command(BaseCommand):
+class Command(MyBaseCommand):
     args = '<csv_filename>'
     help = 'Creates student accounts and adds them to a course.'
     @transaction.commit_on_success
@@ -33,15 +34,7 @@ class Command(BaseCommand):
                 raise CommandError('%s is missing a %s value.' % (args[0], e))
         self.stdout.write('%s new students and %s existing students.\n' % (new_count, existing_count))
         self.stdout.write('To which course will these students be added?\n')
-        for course in Course.objects.filter(is_archived=False):
-            self.stdout.write('(%s) %s\n' % (course.id, course))
-        while True:
-            course_id = raw_input('Course ID: ')
-            try:
-                course = Course.objects.get(id=course_id)
-                break
-            except (ValueError, Course.DoesNotExist):
-                self.stdout.write('Please choose one of the course IDs listed above.\n')
+        course = self.input_course()
         added_count = existing_count = 0
         for student in students:
             if course.has_student(student):
