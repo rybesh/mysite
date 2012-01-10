@@ -41,6 +41,7 @@ class Command(MyBaseCommand):
                 existing_count += 1
             else:
                 course.students.add(student)
+                self.stdout.write('%s\n' % student.email)
                 added_count += 1
         self.stdout.write('%s students added (%s already in that course).\n' % (added_count, existing_count))
         
