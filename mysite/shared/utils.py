@@ -12,3 +12,9 @@ def naive_to_utc(naive_datetime, timezone_string=None):
         timezone_string = settings.TIME_ZONE
     tz = timezone(timezone_string)
     return tz.normalize(tz.localize(naive_datetime)).astimezone(utc)
+
+def truncate(content, length=100, suffix='...'):
+    if len(content) <= length:
+        return content
+    else:
+        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix

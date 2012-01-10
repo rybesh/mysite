@@ -2,6 +2,7 @@ from StringIO import StringIO
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from urllib import urlopen
+from utils import truncate
 from xml.etree.ElementTree import ElementTree
 import json
 
@@ -41,7 +42,8 @@ def load_zotero_atom(uri):
             continue
         key = entry.find('{http://zotero.org/ns/api}key').text
         content = entry.find('{http://www.w3.org/2005/Atom}content').text
-        library.append((key, zotero_item_to_text(json.loads(content))))
+        library.append(
+            (key, truncate(zotero_item_to_text(json.loads(content)))))
     for link in tree.findall('{http://www.w3.org/2005/Atom}link'):
         if link.attrib.get('rel', None) == 'next':
             library.extend(load_zotero_atom(link.attrib['href']))

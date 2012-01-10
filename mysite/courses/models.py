@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from mysite.blog.models import Blog
 from mysite.shared import bibutils
+from mysite.shared.utils import truncate
 import datetime
 import re
 
@@ -238,7 +239,7 @@ class Reading(models.Model):
             self.get_url(), self.access_via_proxy, self.ignore_citation_url)
         return linky.linkify(self.citation_html)
     def __unicode__(self):
-        return self.citation_text
+        return truncate(self.citation_text)
     class Meta:
         ordering = ('citation_text',)
 
