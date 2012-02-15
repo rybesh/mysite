@@ -38,7 +38,7 @@ USE_I18N = False
 USE_L10N = False
 
 MEDIA_ROOT = os.environ['CONFIG_FILES']
-MEDIA_URL = '/'
+MEDIA_URL = '/files/'
 ADMIN_MEDIA_PREFIX = '/admin-media/'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/loggedin/'
