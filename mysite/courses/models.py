@@ -227,7 +227,7 @@ class Reading(models.Model):
         super(Reading, self).save(*args, **kwargs)
     def get_url(self):
         if self.file:
-            return '/files' + self.file.url
+            return self.file.url
         if self.url:
             if self.access_via_proxy:
                 return PROXY + self.url
