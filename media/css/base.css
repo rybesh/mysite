@@ -78,6 +78,7 @@ table p { margin: 0; }
 table p+p { margin-top: 4px; }
 li { margin: 8px 0 0 18px; }
 li p { margin: 0; }
+li p+p, li ul+p, li ol+p, li pre+p { margin-top: 8px; }
 .reading .description { margin-top: 4px; }
 blockquote { margin-left: 1.5em; }
 .tentative { background-color: #d4d4d4; }
