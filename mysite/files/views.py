@@ -8,6 +8,8 @@ def sendfile(request, path):
         response = HttpResponse(mimetype='application/pdf')
     elif path.endswith('.zip'):
         response = HttpResponse(mimetype='application/zip')
+    elif path.endswith('.html'):
+        response = HttpResponse(mimetype='text/html')
     else:
         raise Http404
     response['X-Sendfile'] = '%s/%s' % (settings.MEDIA_ROOT, path)
