@@ -52,7 +52,7 @@
   <div class="description">{{ meeting.description|markdown }}</div>
   {% if user_is_authorized %}
   {% if meeting.slides %}
-  <p>Download <a href="/files{{ meeting.slides.url }}">slides</a> for this class.</p>
+  <p>Download <a href="{{ meeting.slides.url }}">slides</a> for this class.</p>
   {% endif %}
   {% endif %}
   {% if meeting.has_readings %}
