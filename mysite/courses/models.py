@@ -161,6 +161,7 @@ class Assignment(models.Model):
 class Submission(models.Model):
     assignment = models.ForeignKey('Assignment', related_name='submissions')
     submitter = models.ForeignKey(User, related_name='submissions')
+    time_submitted = models.DateTimeField(auto_now=True)
     def upload_to(o, filename):
         return 'courses/%s/%s/%s/assignments/%s/%s.zip' % (
             o.assignment.course.slug, 
