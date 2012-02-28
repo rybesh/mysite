@@ -1,3 +1,4 @@
+from models import Download
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
@@ -10,8 +11,11 @@ def sendfile(request, path):
         response = HttpResponse(mimetype='application/zip')
     elif path.endswith('.html'):
         response = HttpResponse(mimetype='text/html')
+    elif path.endswith('.doc'):
+        response = HttpResponse(mimetype='application/msword')
     else:
         raise Http404
+    Download.objects.create(downloader=request.user, path=path)
     response['X-Sendfile'] = '%s/%s' % (settings.MEDIA_ROOT, path)
     return response
 
