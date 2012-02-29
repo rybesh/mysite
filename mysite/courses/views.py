@@ -128,7 +128,7 @@ def submit_assignment(request, assignment_id):
     o['assignment'] = get_object_or_404(Assignment, id=assignment_id)
     if not (o['assignment'].is_handed_out and 
             o['assignment'].is_submitted_online):
-        return HttpResponseNotFound()
+        raise Http404
     o['course'] = o['assignment'].course
     if not o['course'].is_authorized(request.user):
         return HttpResponseForbidden()
