@@ -27,15 +27,7 @@
     <script>
 function openPopup(url, target) {
   window.popup = window.open(url, target, 'height=251,width=480');
-  window.timer = setInterval(checkPopup, 500);
   return false;
-}
-function checkPopup() {
-  if (window.popup.closed) {
-    clearInterval(window.timer);
-    window.twtrwidget.stop().render().start();
-    window.setTimeout(function() { document.getElementById("tweet-button").scrollIntoView(); }, 500);
-  }
 }
     </script>
     <a id="tweet-button" class="button" style="margin-top: 20px;" 
@@ -45,7 +37,7 @@ function checkPopup() {
     <section id="tweets">
       <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
       <script>
-window.twtrwidget = new TWTR.Widget({
+new TWTR.Widget({
   version: 2,
   type: 'search',
   search: '{% shorturl flatpage %}',
@@ -71,8 +63,7 @@ window.twtrwidget = new TWTR.Widget({
     live: false,
     behavior: 'all'
   }
-});
-window.twtrwidget.render().start();
+}).render().start();
       </script>
     </section>
 {% endblock %}
