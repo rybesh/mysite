@@ -36,6 +36,7 @@ function openPopup(url, target) {
        onclick="return openPopup(this.href, this.target);">Comment via Twitter</a>
     <section id="tweets">
       <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+      <script charset="utf-8" src="/media/js/twidget-patch.js"></script>
       <script>
 new TWTR.Widget({
   version: 2,
@@ -61,9 +62,17 @@ new TWTR.Widget({
     scrollbar: false,
     loop: false,
     live: false,
-    behavior: 'all'
+    behavior: 'all',
+    filters: function(tweet, index, tweets) {
+      if (tweet.from_user == 'rybesh') { return false; }
+      var rt = tweet.text.indexOf('RT');
+      if (rt == -1) { return true; }
+      if (rt == 0) { return false; }
+      tweet.text = tweet.text.slice(0, rt);
+      return true;
+    }
   }
-}).render().start();
+}).render().start();        
       </script>
     </section>
 {% endblock %}
