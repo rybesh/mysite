@@ -108,12 +108,16 @@ nav h1 a:hover, nav h1 a.active {
     background: #fdf6e3;
 }
 
+#wrapper.narrow {
+    max-width: 780px;
+}
+
 h1, h2 { 
     color: #d33682;
 }
 
 p + p {
-    text-indent: 20px;
+    text-indent: .5in;
 }
 
 #notes h1 {
@@ -266,7 +270,11 @@ ul.inline li {
 }
 
 ul.inline li:after {
-  content: ", ";
+    content: ", ";
+}
+
+.thought > footer {
+    text-align: right;
 }
 
 /* font */
@@ -335,12 +343,64 @@ article h2, #notes h1, h3 {
     letter-spacing: 0.1em;
 }
 
+.thought > footer {
+    font-style: italic;
+}
+
 dl {
     font-family: MuseoSans500, Arial, Helvetica, sans-serif;
     font-size: 15px;
 }
 
 dt { font-weight: bold; }
+
+a.button {
+    background-color: #d33682;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	border: 1px solid #d6d2d6;
+	display: inline-block;
+	color: #ffffff;
+	font-family: MuseoSans500, Arial, Helvetica, sans-serif;
+	font-size: 15px;
+	padding: 4px 14px;
+	text-decoration: none;
+}
+
+a.button:hover {
+    text-shadow: 0px 0px 6px #fff;
+}
+
+a.button:active {
+	position: relative;
+	top: 1px;
+}
+
+#tweets {
+    margin-top: 0px;
+}
+
+#twtr-widget-1 {
+    padding-bottom: 40px;
+    font-family: CharisSILRegular, 'Palatino Linotype', Palatino, 'URW Palladio L', serif !important;
+    font-size: 16px !important;
+    line-height: 1.5;    
+}
+
+#twtr-widget-1 .twtr-user {
+    font-family: MuseoSans500, Arial, Helvetica, sans-serif;
+    padding-right: 10px;
+}
+
+#twtr-widget-1 em {
+    text-align: right;
+    font-size: 12px;
+}
+
+#twtr-widget-1 .twtr-ft { display: none; }
+
+
 
 /* responsive */
 

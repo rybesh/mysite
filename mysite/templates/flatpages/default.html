@@ -1,0 +1,78 @@
+{% extends "boilerplate.html" %}
+
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block description %}Ryan Shaw's thoughts {{ flatpage.title|lower }}.{% endblock %}
+
+{% load markdown typogrify timeago shorturl %}
+
+{% block links %}
+  <link rel="shortlink" href="{% shorturl flatpage %}"/>{% endblock %}
+
+{% block wrapperclass %} class="narrow" {% endblock %}
+
+{% block main %}
+    <article id="main" class="thought">
+      <header>
+        <h1>{{ flatpage.title }}</h1>
+      </header>
+      <div class="sweet-justice">
+        {{ flatpage.content|markdown|typogrify }}
+      </div>
+      <footer>
+        <a href="http://aeshin.org/">Ryan Shaw</a><br/>
+        <time pubdate="" datetime="2012-03-01">March 1<sup>st</sup>, 2012</time>
+      </footer>
+    </article>
+    <script>
+function openPopup(url, target) {
+  window.popup = window.open(url, target, 'height=251,width=480');
+  window.timer = setInterval(checkPopup, 500);
+  return false;
+}
+function checkPopup() {
+  if (window.popup.closed) {
+    clearInterval(window.timer);
+    window.twtrwidget.stop().render().start();
+    window.setTimeout(function() { document.getElementById("tweet-button").scrollIntoView(); }, 500);
+  }
+}
+    </script>
+    <a id="tweet-button" class="button" style="margin-top: 20px;" 
+       target="_blank"
+       href="https://twitter.com/share?url={% filter urlencode %}{% shorturl flatpage %}{% endfilter %}"
+       onclick="return openPopup(this.href, this.target);">Comment via Twitter</a>
+    <section id="tweets">
+      <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+      <script>
+window.twtrwidget = new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: '{% shorturl flatpage %}',
+  interval: 30000,
+  title: '',
+  subject: '',
+  width: 'auto',
+  height: 390,
+  theme: {
+    shell: {
+      background: '#eee8d5',
+      color: '#073642'
+    },
+    tweets: {
+      background: '#fdf6e3',
+      color: '#073642',
+      links: '#d33682'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: false,
+    live: false,
+    behavior: 'all'
+  }
+});
+window.twtrwidget.render().start();
+      </script>
+    </section>
+{% endblock %}

@@ -16,6 +16,8 @@ def deploy(request):
         for app in [ 'blog', 'courses', 'talking', 'files' ]:
             management.call_command('migrate', app, noinput=True)
             print
+        management.call_command('updatethoughts', noinput=True)
+        print
     except:
         traceback.print_exc(file=response)
     finally:

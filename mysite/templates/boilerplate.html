@@ -9,7 +9,7 @@
   <meta name="description" content="{% block description %}{% endblock %}"/>
   <meta name="author" content="Ryan Shaw"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="/media/css/style.css?v=3"/>{% block style %}{% endblock %}{% block links %}{% endblock %}
+  <link rel="stylesheet" href="/media/css/style.css?v=4"/>{% block style %}{% endblock %}{% block links %}{% endblock %}
   <script src="/media/js/libs/modernizr-1.7.min.js"></script>
 </head>
 <body>
@@ -24,7 +24,7 @@
       </ul>
     </nav>
   </header>
-  <div id="wrapper">
+  <div id="wrapper"{% block wrapperclass %}{% endblock %}>
     {% block main %}{% endblock %}
   </div>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>

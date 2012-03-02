@@ -72,6 +72,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'mysite.middleware.ShortURLMiddleware',
     'mysite.middleware.XUACompatibleMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'mysite.urls'
@@ -84,16 +85,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.comments',
+    'django.contrib.flatpages',
     'south',
     'shorturls',
-    #'haystack',
     'mysite.shared',
     'mysite.blog',
     'mysite.courses',
     'mysite.comments',
-    #'mysite.reading',
     'mysite.talking',
-    #'mysite.writing',
     'mysite.files',
 )
 
@@ -104,6 +103,7 @@ SHORTEN_FULL_BASE_URL = 'http://aeshin.org/'
 SHORTEN_MODELS = {
     'T': 'reading.text',
     'S': 'talking.talk',
+    'R': 'flatpages.flatpage',
 }
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'
