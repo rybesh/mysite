@@ -169,7 +169,7 @@ class Submission(models.Model):
             o.assignment.course.semester, 
             o.assignment.slug,
             o.submitter.username)
-    zipfile = models.FileField(upload_to=upload_to)
+    zipfile = models.FileField(upload_to=upload_to, blank=True)
     grade = models.IntegerField(default=0)
     letter_grade = models.CharField(blank=True, max_length=2)
     comments = models.TextField(blank=True)
