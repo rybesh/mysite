@@ -69,15 +69,19 @@ class Command(MyBaseCommand):
             try:
                 last_name, first_name = row['Name'].split(',')
                 email = emails[i]
-                if email.endswith('@email.unc.edu'):
-                    email = email.replace('@email.unc.edu', '@live.unc.edu')
-                username = first_name[0].lower() + last_name.lower()
+                username = email.split('@')[0]
                 student, created = User.objects.get_or_create(
                     first_name=first_name, last_name=last_name,
                     defaults={ 'username': username })
                 if created:
+                    self.stdout.write(
+                        'New student: %s %s (%s)\n' 
+                        % (first_name, last_name, email))
                     new_count += 1
                 else:
+                    self.stdout.write(
+                        'Old student: %s %s (%s)\n' 
+                        % (first_name, last_name, email))
                     existing_count += 1
                 student.email = email
                 student.is_active = True
