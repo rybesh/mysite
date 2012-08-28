@@ -1,0 +1,11 @@
+  {% for assignment in assignments_due %}
+  <p class="assignment-due">
+    Assignment #{{  assignment.number }}
+    {% if assignment.is_handed_out %}
+    <a href="{{ assignment.get_absolute_url }}">
+      {{ assignment.title }}
+    </a>
+    {% endif %}
+    due
+  </p>
+  {% endfor %}

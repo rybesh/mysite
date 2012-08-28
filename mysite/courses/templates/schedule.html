@@ -27,6 +27,7 @@
 </h3>
 <div>
   <p>No class.</p>
+  {% include "assignments_due.include" with assignments_due=holiday.assignments_due %}
 </div>
 {% endwith %}
 {% else %}
@@ -38,17 +39,7 @@
 </h3>
 <div class="meeting{% if meeting.is_tentative %} tentative{% endif %}">
   {% filter typogrify %}
-  {% for assignment in meeting.assignments_due %}
-  <p class="assignment-due">
-    Assignment #{{  assignment.number }}
-    {% if assignment.is_handed_out %}
-    <a href="{{ assignment.get_absolute_url }}">
-      {{ assignment.title }}
-    </a>
-    {% endif %}
-    due
-  </p>
-  {% endfor %}
+  {% include "assignments_due.include" with assignments_due=meeting.assignments_due %}
   <div class="description">{{ meeting.description|markdown }}</div>
   {% if user_is_authorized %}
   {% if meeting.slides %}

@@ -44,17 +44,15 @@ def schedule(request, slug, year, semester):
         assignments_due.append(assignment)
         assignments[assignment.due_date] = assignments_due
     o['in_flux'] = False
-    for meeting in o['meetings']:
-        meeting.assignments_due = assignments.get(meeting.date, [])
-        if meeting.is_tentative: o['in_flux'] = True
-    
     o['schedule'] = o['meetings'] + o['holidays']
     o['schedule'].sort(key=lambda x: x.date)
     today = datetime.date.today()
     for item in o['schedule']:
+        item.assignments_due = assignments.get(item.date, [])
+        if hasattr(item, 'is_tentative') and item.is_tentative: 
+            o['in_flux'] = True
         if item.date >= today:
             item.next = True
-            break
     o['user_is_authorized'] = o['course'].is_authorized(request.user)
     return render_to_response('schedule.html', o,
                               context_instance=RequestContext(request))
