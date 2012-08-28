@@ -53,8 +53,11 @@ class Course(models.Model):
     thanks = models.TextField(blank=True)
     is_archived = models.BooleanField(default=False)
     blog_slug = models.CharField(max_length=20, blank=True)
+    forum = models.URLField(blank=True)
     def has_blog(self):
         return (len(self.blog_slug) > 0)
+    def has_forum(self):
+        return (len(self.forum) > 0)
     def has_student(self, student):
         return (len(self.students.filter(id=student.id, is_active=True)) > 0)
     def is_authorized(self, user):
