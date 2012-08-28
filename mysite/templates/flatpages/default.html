@@ -2,6 +2,13 @@
 
 {% block title %}{{ flatpage.title }}{% endblock %}
 
+{% block style %}
+<style type="text/css">
+h2 { margin-top: 2em; margin-bottom: 0.5em; }
+li { margin-bottom: 5px; }
+</style>
+{% endblock %}
+
 {% block description %}Ryan Shaw's thoughts {{ flatpage.title|lower }}.{% endblock %}
 
 {% load markdown typogrify timeago shorturl %}
@@ -21,7 +28,9 @@
       </div>
       <footer>
         <a href="http://aeshin.org/">Ryan Shaw</a><br/>
+<!--
         <time pubdate="" datetime="2012-03-01">March 1<sup>st</sup>, 2012</time>
+-->
       </footer>
     </article>
     <script>
