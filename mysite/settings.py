@@ -104,6 +104,7 @@ SHORTEN_MODELS = {
     'T': 'reading.text',
     'S': 'talking.talk',
     'R': 'flatpages.flatpage',
+    'C': 'courses.course',
 }
 
 #HAYSTACK_SITECONF = 'mysite.search_sites'

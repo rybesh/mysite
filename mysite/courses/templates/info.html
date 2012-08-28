@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
-{% load markdown typogrify %}
+{% load markdown typogrify shorturl %}
+
+{% block links %}
+  <link rel="shortlink" href="{% shorturl course %}"/>{% endblock %}
 
 {% block content %}
 {% filter typogrify %}
