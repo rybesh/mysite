@@ -13,6 +13,8 @@ def sendfile(request, path):
         response = HttpResponse(mimetype='text/html')
     elif path.endswith('.doc'):
         response = HttpResponse(mimetype='application/msword')
+    elif path.endswith('.docx'):
+        response = HttpResponse(mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     else:
         raise Http404
     Download.objects.create(downloader=request.user, path=path)
