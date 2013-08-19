@@ -22,6 +22,7 @@ class CourseAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ('number',) }
     filter_horizontal = ('students',)
     ordering = ('is_archived',)
+    save_as = True
     def is_current(self, course):
         return not course.is_archived
     is_current.boolean = True
@@ -77,6 +78,7 @@ class ReadingAdmin(admin.ModelAdmin):
 class SubmissionAdmin(admin.ModelAdmin):
     list_display = ('assignment', 'submitter', 'time_submitted', 'get_grade')
     list_filter = ('assignment',)
+    save_as = True
     def queryset(self, request):
         return super(SubmissionAdmin, self).queryset(request)\
             .filter(assignment__course__is_archived=False)

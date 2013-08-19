@@ -153,3 +153,6 @@ a.button:active, a.pushed, a.pushed:hover {
   color:#fff;
 }
 
+@media print {
+  nav { display: none; }
+}

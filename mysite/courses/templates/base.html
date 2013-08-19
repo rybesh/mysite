@@ -21,7 +21,7 @@
           <li><a href="{{ course_url }}schedule/{% if not course.is_archived %}#next{% endif %}">Schedule.</a></li>
           <li><a href="{{ course_url }}assignments/">Assignments.</a></li>
           {% if course.has_forum %}
-          <li><a href="{{ course.forum }}">Forum.</a></li>
+          <li><a target="_blank" href="{{ course.forum }}">Forum.</a></li>
           {% endif %}
           {% if course.has_blog %}
           <li><a href="/courses/{{ course.blog_slug }}/blog/">Blog.</a></li>
@@ -30,7 +30,7 @@
           <li><a href="{{ course_url }}thanks/">Thanks.</a></li>
           {% endwith %}
           {% if user.is_authenticated %}
-          <li><a href="{{ course.get_absolute_url }}dashboard/">Dashboard.</a></li>
+          <li><a href="{{ course_url }}grades/">Grades.</a></li>
           {% else %}
           <li><a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">Log in.</a></li>
           {% endif %}

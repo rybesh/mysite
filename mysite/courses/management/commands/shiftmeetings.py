@@ -3,7 +3,7 @@ from django.db import transaction
 from utils import MyBaseCommand
 
 class Command(MyBaseCommand):
-    help = 'Shifts forward the dates of course meetings.'
+    help = 'Shifts the dates of course meetings.'
     @transaction.commit_on_success
     def handle(self, *args, **options):
         course = self.input_course()
@@ -11,16 +11,20 @@ class Command(MyBaseCommand):
             self.stdout.write('%s\n' % m)
         start_date = self.input_date('Start date')
         end_date = self.input_date('End date')
-        meetings = list(course.meetings.filter(
-            date__gte=start_date, date__lt=end_date))
-        for i, m in enumerate(meetings):
+        self.stdout.write('Shift in which direction ?\n')
+        direction = self.input_choices(['forward','backward'])
+        if direction == 'forward':
+            meetings = list(course.meetings.filter(
+                    date__gte=start_date, date__lte=end_date))
+        else:
+            meetings = list(reversed(course.meetings.filter(
+                    date__gte=start_date, date__lt=end_date)))
+        for i, m in list(enumerate(meetings))[1:-1]:
             if not m.is_tentative:
                 raise CommandError('%s has been finalized.' % m)
-            if (i+1) == len(meetings):
-                m.date = end_date
-            else:
-                m.date = meetings[i+1].date
-            self.stdout.write('%s\n' % m)
+            new_date =  meetings[i+1].date
+            self.stdout.write('%s -> %s\n' % (m, new_date))
+            m.date = new_date
         if self.input_ok('Shifting %s meetings' % len(meetings)):
             for m in meetings:
                 m.save()

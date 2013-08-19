@@ -9,8 +9,12 @@ class MyBaseCommand(BaseCommand):
         answer = raw_input('%s? [y/N]:' % prompt)
         return (answer.lower() == 'y')
 
-    def input_course(self):
-        for course in Course.objects.filter(is_archived=False):
+    def input_course(self, include_archived=False):
+        if include_archived:
+            courses = Course.objects.all()
+        else:
+            courses = Course.objects.filter(is_archived=False)
+        for course in courses:
             self.stdout.write('(%s) %s\n' % (course.id, course))
         while True:
             course_id = raw_input('Course ID: ')
@@ -26,3 +30,14 @@ class MyBaseCommand(BaseCommand):
                 return date(*[int(x) for x in datestring.split('-')])
             except:
                 self.stdout.write('Please enter a date using the format YYYY-MM-DD.\n')
+
+    def input_choices(self, choices):
+        for i, choice in enumerate(choices):
+            self.stdout.write('(%s) %s\n' % (i+1, choice))
+        while True:
+            try:
+                return choices[int(raw_input('Choice: '))-1]
+            except (IndexError, TypeError):
+                self.stdout.write('Please choose one of the numbers listed above.\n')
+        
+            

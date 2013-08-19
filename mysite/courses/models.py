@@ -173,7 +173,7 @@ class Submission(models.Model):
             o.assignment.slug,
             o.submitter.username)
     zipfile = models.FileField(upload_to=upload_to, blank=True)
-    grade = models.IntegerField(default=0)
+    grade = models.FloatField(default=0.0)
     letter_grade = models.CharField(blank=True, max_length=2)
     comments = models.TextField(blank=True)
     def get_grade(self):
@@ -203,7 +203,7 @@ class Linky:
                 anchor = self.stored_url
             html = re.sub(
                 r'</div>\n</div>', 
-                r' <a href="%s">%s</a>.</div>\n</div>' % (
+                r' <a target="_blank" href="%s">%s</a>.</div>\n</div>' % (
                     self.stored_url, anchor), html, 1)
         return mark_safe(html)
     def repl(self, match):
@@ -212,7 +212,7 @@ class Linky:
         self.url = match.group(1)
         if self.access_via_proxy:
             self.url = PROXY + self.url
-        return ' <a href="%s">%s</a>.' % (self.url, match.group(1))
+        return ' <a target="_blank" href="%s">%s</a>.' % (self.url, match.group(1))
 
 class Reading(models.Model):
     zotero_id = models.CharField(max_length=16)

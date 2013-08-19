@@ -24,7 +24,7 @@ li { margin-bottom: 5px; }
         <h1>{{ flatpage.title }}</h1>
       </header>
       <div class="sweet-justice">
-        {{ flatpage.content|markdown|typogrify }}
+        {{ flatpage.content|markdown:"unsafe"|typogrify }}
       </div>
       <footer>
         <a href="http://aeshin.org/">Ryan Shaw</a><br/>

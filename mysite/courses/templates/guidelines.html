@@ -14,9 +14,20 @@
 <h3><span class="title">Participation</span></h3>
 {{ course.participation|markdown }}
 </section>
+<section id="communicating">
+<h3><span class="title">Communicating with me</span></h3>
+{% if course.forum %}
+<p>Please use <a target="_blank" href="{{ course.forum }}">Piazza</a> to communicate with me about issues related to this class. I receive a lot of email, and much of it gets filtered into folders that I do not check regularly. Messages sent via Piazza, on the other hand, are guaranteed to get to me quickly.</p>
+<p>If your question or message is only relevant to you personally, you can post privately (only I will see your message). But if you have a question that you think another student in the class might be able to answer, or if you think the answer to your question might be useful to others in the class, please post your question non-privately so everyone in the class can see it (you can still remain anonymous to your fellow students).</p>
+{% else %}
+<p><a href="mailto:ryanshaw@unc.edu">Email</a> is the best way to communicate with me outside of class. It is particularly well-suited for short-answer and clarification questions.</p>
+{% endif %}
+<p>I will try my best to respond to you within a 24-hour period, but in some cases it may take 2 to 3 days. Please keep this in mind when you are scheduling your own activities, especially those related to exam preparation.  If you wait until the day before an exam to ask me a clarification question, there is a good chance that you will not receive a response before the exam.</p>
+<p>If you need assistance understanding a concept or an assignment, or have another potentially complicated question, then please <a target="_blank" href="http://ryanshaw.youcanbook.me/">make an appointment for my office hours</a> and visit me in-person. If you ask a question via email that I believe is better suited for in-person discussion, then I will ask you to visit my office. If you have questions about how your assignment was evaluated, then you must visit me in-person to have this discussion. **I will not discuss your grades and my evaluation of your work via email.**</p>
+</section>
 <section id="honor">
 <h3><span class="title">Honor Code</span></h3>
-<p>You are expected to know and respect <a href="http://honor.unc.edu/">UNC Honor Code</a>. Collaboration, discussion, and seeking assistance from other students is encouraged in this class and is not inconsistent with the Honor Code. In the case of written work, all words drawn from others must be <a href="http://www.lib.unc.edu/instruct/tutorials.html">attributed appropriately</a>.</p>
+<p>You are expected to know and respect <a target="_blank" href="http://honor.unc.edu/">UNC Honor Code</a>. Collaboration, discussion, and seeking assistance from other students is encouraged in this class and is not inconsistent with the Honor Code. In the case of written work, all words drawn from others must be <a target="_blank" href="http://www.lib.unc.edu/instruct/tutorials.html">attributed appropriately</a>.</p>
 </section>
 {% endfilter %}
 {% endblock %}

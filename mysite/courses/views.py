@@ -226,7 +226,7 @@ def grades_csv(course):
     return HttpResponse(buf.getvalue(), 'text/csv')
 
 @login_required
-def dashboard(request, slug, year, semester):
+def grades(request, slug, year, semester):
     o = {}
     o['course'] = get_object_or_404(
         Course, slug=slug, year=year, semester=semester)
@@ -255,7 +255,7 @@ def dashboard(request, slug, year, semester):
     o['discussion_count'] = setdefault(o['student'].username)['discussion_count']
     o['discussion_median'] = median([ v['discussion_count'] for v in counts.values() ])
     try:
-        blog = Blog.objects.get(slug=slug)
+        blog = Blog.objects.get(slug=o['course'].blog_slug)
         o['blog_metrics'] = True
         date_range = o['course'].get_date_range()
         for poster in blog.posts\
@@ -295,7 +295,7 @@ def dashboard(request, slug, year, semester):
             data['median'] = '%s / %s' % (
                 median(grades.values()), assignment.points)
         o['assignments'].append(data)
-    return render_to_response('dashboard.html', o,
+    return render_to_response('grades.html', o,
                               context_instance=RequestContext(request))
 
 class BlogPostForm(forms.Form):

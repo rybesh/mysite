@@ -48,6 +48,8 @@ urlpatterns = patterns('',
 
     (r'^loggedin/$', loggedin),
     (r'', include('django.contrib.auth.urls')),
+
+    (r'^rcrforum/$', redirect_to, { 'url': '/textmining/' }),
 )
 
 
