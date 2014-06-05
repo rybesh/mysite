@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.management.base import CommandError
 from django.db import transaction
+from django.db.utils import IntegrityError
 from mysite.courses.models import Course
 from utils import MyBaseCommand
 from HTMLParser import HTMLParser
@@ -61,34 +62,37 @@ class Command(MyBaseCommand):
                 emails.append(line.strip())
         students = []
         new_count = existing_count = 0
-        rows = reader(open(args[0], 'rb'))
-        if not len(emails) == len(rows):
-            raise CommandError(
-                'Number of emails does not match number of students.')
-        for i, row in enumerate(rows):
+        for i, row in enumerate(reader(open(args[0], 'rb'))):
             try:
-                last_name, first_name = row['Name'].split(',')
+                last_name, first_name = [ 
+                    x.strip() for x in row['Name'].split(',') ]
                 email = emails[i]
                 username = email.split('@')[0]
-                student, created = User.objects.get_or_create(
-                    first_name=first_name, last_name=last_name,
-                    defaults={ 'username': username })
-                if created:
-                    self.stdout.write(
-                        'New student: %s %s (%s)\n' 
-                        % (first_name, last_name, email))
-                    new_count += 1
-                else:
-                    self.stdout.write(
-                        'Old student: %s %s (%s)\n' 
-                        % (first_name, last_name, email))
-                    existing_count += 1
-                student.email = email
-                student.is_active = True
-                student.save()
-                students.append(student)
+                try:
+                    student, created = User.objects.get_or_create(
+                        first_name=first_name, last_name=last_name,
+                        defaults={ 'username': username })
+                    if created:
+                        self.stdout.write(
+                            'New student: %s %s (%s)\n' 
+                            % (first_name, last_name, email))
+                        new_count += 1
+                    else:
+                        self.stdout.write(
+                            'Old student: %s %s (%s)\n' 
+                            % (first_name, last_name, email))
+                        existing_count += 1
+                    student.email = email
+                    student.is_active = True
+                    student.save()
+                    students.append(student)
+                except IntegrityError as e:
+                    raise CommandError('Username collision: %s' % username)
             except KeyError as e:
                 raise CommandError('%s is missing a %s value.' % (args[0], e))
+        if not len(students) == len(emails):
+            raise CommandError(
+                'Number of emails does not match number of students.')
         self.stdout.write('%s new students and %s existing students.\n' % (new_count, existing_count))
         self.stdout.write('To which course will these students be added?\n')
         course = self.input_course()

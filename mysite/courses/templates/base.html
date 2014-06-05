@@ -28,12 +28,12 @@
           {% endif %}
           <li><a href="{{ course_url }}guidelines/">Guidelines.</a></li>
           <li><a href="{{ course_url }}thanks/">Thanks.</a></li>
-          {% endwith %}
           {% if user.is_authenticated %}
           <li><a href="{{ course_url }}grades/">Grades.</a></li>
           {% else %}
           <li><a href="{% url django.contrib.auth.views.login %}?next={{ request.path }}">Log in.</a></li>
           {% endif %}
+          {% endwith %}
         </ul>
       </nav>    
       <header>
